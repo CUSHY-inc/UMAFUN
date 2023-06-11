@@ -1,11 +1,6 @@
 import useSWR from "swr";
 import { fetcher } from "@/boilerplate/utils/api";
-import {
-  ReactSelect,
-  MultiselectDropdown,
-  MaterialTailwindSelect,
-  PrimereactMultiselect,
-} from "@/boilerplate/components/CustomSelect";
+import { Select, Multiselect } from "@/boilerplate/components/Select";
 import { mgt_race_id } from "@prisma/client";
 
 export const Conditional = () => {
@@ -32,6 +27,9 @@ export const Conditional = () => {
         </select>
       </form> */}
       <div className="mx-6">
+        <Select options={raceNames} label="レース名" />
+      </div>
+      {/* <div className="mx-6">
         <MaterialTailwindSelect options={raceNames} label="レース名" />
       </div>
       <div className="flex justify-center gap-4 mt-8">
@@ -49,13 +47,13 @@ export const Conditional = () => {
         <div className="w-36">
           <MultiselectDropdown options={umaban} placeholder="人気" />
         </div>
-      </div>
+      </div> */}
       <div className="flex justify-center gap-4 mt-8">
         <div className="w-36">
-          <MultiselectDropdown options={umaban} placeholder="着順" />
+          <Multiselect options={umaban} label="馬番" />
         </div>
         <div className="w-36">
-          <PrimereactMultiselect />
+          <Multiselect options={raceNames} label="レース名を選択" />
         </div>
       </div>
     </div>
