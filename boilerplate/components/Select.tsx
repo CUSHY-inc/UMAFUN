@@ -1,93 +1,61 @@
 import { twMerge } from "tailwind-merge";
-// import Select, { ActionMeta, MultiValue } from "react-select";
-import { Select as MaterialSelect, Option } from "@material-tailwind/react";
-import { MultiSelect } from "primereact/multiselect";
-import { useState } from "react";
-
-// type OptionType = {
-//   label: string;
-//   value: string;
-// };
-// export const ReactSelect = ({
-//   options,
-//   defaultNum,
-//   placeholder,
-//   isMulti,
-//   className,
-//   onChange,
-// }: {
-//   options: string[];
-//   defaultNum?: number;
-//   placeholder?: string;
-//   isMulti?: boolean;
-//   label?: string;
-//   className?: string;
-//   onChange?: (
-//     selectedOption: OptionType | MultiValue<OptionType> | null,
-//     actionMeta: ActionMeta<OptionType>
-//   ) => void;
-// }) => {
-//   const customOptios = options?.map((value) => ({ value, label: value }));
-//   return (
-//     customOptios && (
-//       <Select
-//         className={twMerge("text-lg", className)}
-//         options={customOptios}
-//         defaultValue={
-//           defaultNum !== undefined ? customOptios[defaultNum] : null
-//         }
-//         placeholder={placeholder && placeholder}
-//         isMulti={isMulti && isMulti}
-//         onChange={onChange}
-//       />
-//     )
-//   );
-// };
+import { MultiSelect as PrimeReactMultiSelect } from "primereact/multiselect";
+import React from "react";
+import { Dropdown } from "primereact/dropdown";
 
 export const Select = ({
   options,
   label,
+  selected,
+  setSelected,
   className,
 }: {
   options: string[];
   label?: string;
+  selected: string | null;
+  setSelected: React.Dispatch<React.SetStateAction<string | null>>;
   className?: string;
 }) => {
   return (
-    options && (
-      <MaterialSelect className={twMerge("text-lg", className)} label={label}>
-        {options.map((option) => (
-          <Option>{option}</Option>
-        ))}
-      </MaterialSelect>
-    )
+    <Dropdown
+      options={options}
+      onChange={(e) => setSelected(e.value)}
+      value={selected}
+      placeholder={label && label}
+      className={twMerge("w-full text-sm", className)}
+    />
   );
 };
 
 export type MultiSelectType = {
-  value: string;
+  name: string;
 };
-export const Multiselect = ({
+export const MultiSelect = ({
   options,
   label,
+  selected,
+  setSelected,
+  className,
 }: {
   options: string[];
   label: string;
+  selected: MultiSelectType | null;
+  setSelected: React.Dispatch<React.SetStateAction<MultiSelectType | null>>;
+  className?: string;
 }) => {
-  const [selected, setSelected] = useState<MultiSelectType | null>(null);
   const customOptions: MultiSelectType[] = options?.map((option) => ({
-    value: option,
+    name: option,
   }));
 
   return (
     <div className="card flex justify-content-center">
       <span className="p-float-label">
-        <MultiSelect
+        <PrimeReactMultiSelect
           value={selected}
           onChange={(e) => setSelected(e.value)}
           options={customOptions}
-          optionLabel="value"
-          className="w-full md:w-20rem"
+          optionLabel="name"
+          className={twMerge("w-full text-sm", className)}
         />
         <label>{label}</label>
       </span>
