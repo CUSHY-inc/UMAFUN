@@ -56,10 +56,8 @@ export const Conditional = () => {
   const [selectedLastRank, setSelectedLastRank] =
     useState<MultiSelectType | null>(null);
 
-  console.log(selectedRaceName);
-
   return (
-    <div className="rounded-lg shadow mx-4 py-4 bg-white">
+    <div className="rounded-lg shadow mx-4 py-8 bg-white">
       <div className="mx-4">
         <Select
           options={raceName}
