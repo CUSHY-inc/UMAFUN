@@ -35,13 +35,19 @@ export const MultiSelect = ({
   label,
   selected,
   setSelected,
+  display = "comma",
   className,
+  style,
+  flex = false,
 }: {
   options: string[];
   label: string;
   selected: MultiSelectType | null;
   setSelected: React.Dispatch<React.SetStateAction<MultiSelectType | null>>;
+  display?: "comma" | "chip" | undefined;
   className?: string;
+  style?: Object;
+  flex?: boolean;
 }) => {
   const customOptions: MultiSelectType[] = options?.map((option) => ({
     name: option,
@@ -53,9 +59,14 @@ export const MultiSelect = ({
         <PrimeReactMultiSelect
           value={selected}
           onChange={(e) => setSelected(e.value)}
+          onFocus={(e) => console.log(e)}
+          onBlur={(e) => console.log(e)}
           options={customOptions}
           optionLabel="name"
           className={twMerge("w-full text-sm", className)}
+          style={style}
+          display={display}
+          flex={flex}
         />
         <label>{label}</label>
       </span>

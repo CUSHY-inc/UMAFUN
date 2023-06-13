@@ -78,6 +78,7 @@ export const Conditional = () => {
             label="馬番"
             selected={selectedNumber}
             setSelected={setSelectedNumber}
+            flex={true}
           />
         </div>
         <div className="w-36">
@@ -86,6 +87,7 @@ export const Conditional = () => {
             label="枠番"
             selected={selectedFrame}
             setSelected={setSelectedFrame}
+            flex={true}
           />
         </div>
       </div>
@@ -101,6 +103,7 @@ export const Conditional = () => {
             label="人気"
             selected={selectedPopular}
             setSelected={setSelectedPopular}
+            flex={true}
           />
         </div>
         <div className="w-36">
@@ -109,6 +112,7 @@ export const Conditional = () => {
             label="着順"
             selected={selectedArrive}
             setSelected={setSelectedArrive}
+            flex={true}
           />
         </div>
       </div>
@@ -124,6 +128,7 @@ export const Conditional = () => {
             label="性齢"
             selected={selectedGenderOld}
             setSelected={setSelectedGenderOld}
+            flex={true}
           />
         </div>
         <div className="w-36">
@@ -132,6 +137,7 @@ export const Conditional = () => {
             label="上り順"
             selected={selectedLastRank}
             setSelected={setSelectedLastRank}
+            flex={true}
           />
         </div>
       </div>
