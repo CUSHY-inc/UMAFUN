@@ -32,7 +32,7 @@ export const Select = ({
 
 export type MultiSelectType = {
   name: string;
-};
+}[];
 export const MultiSelect = ({
   options,
   label,
@@ -52,7 +52,7 @@ export const MultiSelect = ({
   style?: Object;
   flex?: boolean;
 }) => {
-  const customOptions: MultiSelectType[] = options?.map((option) => ({
+  const customOptions: MultiSelectType = options?.map((option) => ({
     name: option,
   }));
 

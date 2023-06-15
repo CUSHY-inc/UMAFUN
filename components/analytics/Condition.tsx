@@ -10,6 +10,8 @@ import { useState } from "react";
 import clsx from "clsx";
 import { RangeSlider } from "@/boilerplate/components/Slider";
 import { InputNumber } from "primereact/inputnumber";
+import { Button } from "primereact/button";
+import { ICondition } from "@/interfaces/condition";
 
 const numberMax = 24;
 const frameMax = 8;
@@ -28,12 +30,15 @@ const oddsMax = 200;
 const oddsMin = 1;
 const horseWeightMax = 580;
 const horseWeightMin = 380;
+const MIN = 0;
+const MAX = 1;
 
-export const Conditional = () => {
+export const Condition = () => {
   const { data, error } = useSWR(
     { url: "/api/db/raceIds", method: "GET" },
     fetcher
   );
+  const [selectedCondition, setCondition] = useState<ICondition>();
   const raceName = data?.map((item: mgt_race_id) => item.race_name);
   const [selectedRaceName, setSelectedRaceName] = useState<string | null>(null);
   const number = [...Array(numberMax)].map((_, i) => (i + 1).toString());
@@ -86,6 +91,32 @@ export const Conditional = () => {
   const [selectedHorseWeight, setSelectedHorseWeight] = useState<
     [number, number]
   >([horseWeightMin, horseWeightMax]);
+
+  const handleClick = () => {
+    if (!selectedRaceName) {
+      return;
+    }
+    const conditon: ICondition = {
+      raceName: selectedRaceName,
+      number: selectedNumber?.map((val) => parseInt(val.name)),
+      frame: selectedFrame?.map((val) => parseInt(val.name)),
+      popular: selectedPopular?.map((val) => parseInt(val.name)),
+      arrive: selectedArrive?.map((val) => parseInt(val.name)),
+      genderOld: selectedGenderOld?.map((val) => parseInt(val.name)),
+      lastRank: selectedLastRank?.map((val) => parseInt(val.name)),
+      minWeight: selectedWeight[MIN],
+      maxWeight: selectedWeight[MAX],
+      minTime: selectedTime[MIN],
+      maxTime: selectedTime[MAX],
+      minLast: selectedLast[MIN],
+      maxLast: selectedLast[MAX],
+      minOdds: selectedOdds[MIN],
+      maxOdds: selectedOdds[MAX],
+      minHorseWeight: selectedHorseWeight[MIN],
+      maxHorseWeight: selectedHorseWeight[MAX],
+    };
+    setCondition(conditon);
+  };
 
   return (
     <div className="rounded-lg shadow mx-4 py-8 mb-8 bg-white">
@@ -167,11 +198,11 @@ export const Conditional = () => {
             />
             <div className="mt-1 flex justify-between items-center gap-x-2">
               <InputNumber
-                value={selectedWeight[0]}
+                value={selectedWeight[MIN]}
                 min={weightMin}
                 max={weightMax}
                 onValueChange={(e) => {
-                  setSelectedWeight([e.value as number, selectedWeight[1]]);
+                  setSelectedWeight([e.value as number, selectedWeight[MAX]]);
                 }}
                 inputClassName="w-16 text-sm"
                 inputStyle={{ border: "none" }}
@@ -179,11 +210,11 @@ export const Conditional = () => {
               />
               <div>~</div>
               <InputNumber
-                value={selectedWeight[1]}
+                value={selectedWeight[MAX]}
                 min={weightMin}
                 max={weightMax}
                 onValueChange={(e) => {
-                  setSelectedWeight([selectedWeight[0], e.value as number]);
+                  setSelectedWeight([selectedWeight[MIN], e.value as number]);
                 }}
                 inputClassName="w-16 text-sm"
                 inputStyle={{ border: "none" }}
@@ -201,22 +232,22 @@ export const Conditional = () => {
             />
             <div className="mt-1 flex justify-between items-center gap-x-2">
               <InputNumber
-                value={selectedTime[0]}
+                value={selectedTime[MIN]}
                 min={timeMin}
                 max={timeMax}
                 onValueChange={(e) => {
-                  setSelectedTime([e.value as number, selectedTime[1]]);
+                  setSelectedTime([e.value as number, selectedTime[MAX]]);
                 }}
                 inputClassName="w-16 text-sm"
                 inputStyle={{ border: "none" }}
               />
               <div>~</div>
               <InputNumber
-                value={selectedTime[1]}
+                value={selectedTime[MAX]}
                 min={timeMin}
                 max={timeMax}
                 onValueChange={(e) => {
-                  setSelectedTime([selectedTime[0], e.value as number]);
+                  setSelectedTime([selectedTime[MIN], e.value as number]);
                 }}
                 inputClassName="w-16 text-sm"
                 inputStyle={{ border: "none" }}
@@ -234,11 +265,11 @@ export const Conditional = () => {
             />
             <div className="mt-1 flex justify-between items-center gap-x-2">
               <InputNumber
-                value={selectedLast[0]}
+                value={selectedLast[MIN]}
                 min={lastMin}
                 max={lastMax}
                 onValueChange={(e) => {
-                  setSelectedLast([e.value as number, selectedLast[1]]);
+                  setSelectedLast([e.value as number, selectedLast[MAX]]);
                 }}
                 inputClassName="w-16 text-sm"
                 inputStyle={{ border: "none" }}
@@ -246,11 +277,11 @@ export const Conditional = () => {
               />
               <div>~</div>
               <InputNumber
-                value={selectedLast[1]}
+                value={selectedLast[MAX]}
                 min={lastMin}
                 max={lastMax}
                 onValueChange={(e) => {
-                  setSelectedLast([selectedLast[0], e.value as number]);
+                  setSelectedLast([selectedLast[MIN], e.value as number]);
                 }}
                 inputClassName="w-16 text-sm"
                 inputStyle={{ border: "none" }}
@@ -268,22 +299,22 @@ export const Conditional = () => {
             />
             <div className="mt-1 flex justify-between items-center gap-x-2">
               <InputNumber
-                value={selectedOdds[0]}
+                value={selectedOdds[MIN]}
                 min={oddsMin}
                 max={oddsMax}
                 onValueChange={(e) => {
-                  setSelectedOdds([e.value as number, selectedOdds[1]]);
+                  setSelectedOdds([e.value as number, selectedOdds[MAX]]);
                 }}
                 inputClassName="w-16 text-sm"
                 inputStyle={{ border: "none" }}
               />
               <div>~</div>
               <InputNumber
-                value={selectedOdds[1]}
+                value={selectedOdds[MAX]}
                 min={oddsMin}
                 max={oddsMax}
                 onValueChange={(e) => {
-                  setSelectedOdds([selectedOdds[0], e.value as number]);
+                  setSelectedOdds([selectedOdds[MIN], e.value as number]);
                 }}
                 inputClassName="w-16 text-sm"
                 inputStyle={{ border: "none" }}
@@ -300,13 +331,13 @@ export const Conditional = () => {
             />
             <div className="mt-1 flex justify-between items-center gap-x-2">
               <InputNumber
-                value={selectedHorseWeight[0]}
+                value={selectedHorseWeight[MIN]}
                 min={horseWeightMin}
                 max={horseWeightMax}
                 onValueChange={(e) => {
                   setSelectedHorseWeight([
                     e.value as number,
-                    selectedHorseWeight[1],
+                    selectedHorseWeight[MAX],
                   ]);
                 }}
                 inputClassName="w-16 text-sm"
@@ -314,12 +345,12 @@ export const Conditional = () => {
               />
               <div>~</div>
               <InputNumber
-                value={selectedHorseWeight[1]}
+                value={selectedHorseWeight[MAX]}
                 min={horseWeightMin}
                 max={horseWeightMax}
                 onValueChange={(e) => {
                   setSelectedHorseWeight([
-                    selectedHorseWeight[0],
+                    selectedHorseWeight[MIN],
                     e.value as number,
                   ]);
                 }}
@@ -329,6 +360,9 @@ export const Conditional = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="card flex justify-content-center mt-4 mx-16">
+        <Button label="検索" onClick={handleClick} />
       </div>
     </div>
   );
