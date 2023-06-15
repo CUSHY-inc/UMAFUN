@@ -9,12 +9,14 @@ export const Select = ({
   selected,
   setSelected,
   className,
+  filter = false,
 }: {
   options: string[];
   label?: string;
   selected: string | null;
   setSelected: React.Dispatch<React.SetStateAction<string | null>>;
   className?: string;
+  filter?: boolean;
 }) => {
   return (
     <Dropdown
@@ -23,6 +25,7 @@ export const Select = ({
       value={selected}
       placeholder={label && label}
       className={twMerge("w-full text-sm", className)}
+      filter={filter}
     />
   );
 };
