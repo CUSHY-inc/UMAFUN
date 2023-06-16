@@ -1,5 +1,7 @@
 import { MultiSelectType } from "@/boilerplate/components/Select";
 
+export const MIN = 0;
+export const MAX = 1;
 export interface ICondition {
   raceName: string | undefined;
   number: MultiSelectType | undefined;

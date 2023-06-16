@@ -32,7 +32,7 @@ model mgt_race_info {
 model mgt_race_result {
   id           Int         @id @default(autoincrement())
   race_id      Int
-  year         String?     @db.VarChar(255)
+  year         Int?
   arrive       Int?
   frame        Int?
   number       Int?
