@@ -7,6 +7,8 @@ import { RangeSlider } from "@/boilerplate/components/Slider";
 import { InputNumber } from "primereact/inputnumber";
 import { ICondition } from "@/interfaces/condition";
 
+const yearMax = 2022;
+const yearMin = 2011;
 const numberMax = 24;
 const frameMax = 8;
 const popularMax = 24;
@@ -39,6 +41,9 @@ export const Condition = ({
     fetcher
   );
   const raceName = data?.map((item: mgt_race_id) => item.race_name);
+  const year = Array.from({ length: yearMax - yearMin + 1 }, (_, index) =>
+    (yearMax - index).toString()
+  );
   const number = [...Array(numberMax)].map((_, i) => (i + 1).toString());
   const frame = [...Array(frameMax)].map((_, i) => (i + 1).toString());
   const popular = [...Array(popularMax)].map((_, i) => (i + 1).toString());
@@ -58,7 +63,7 @@ export const Condition = ({
 
   return (
     <>
-      <div className="mx-4">
+      <div className="mx-4 mt-4">
         <Select
           options={raceName}
           label="レース名を選択"
@@ -72,6 +77,48 @@ export const Condition = ({
           filter={true}
         />
       </div>
+      <div className="mx-4 mt-6 flex items-center gap-x-8">
+        <div>
+          <Select
+            options={year}
+            selected={
+              condition.year
+                ? condition.year[MIN].toString()
+                : yearMin.toString()
+            }
+            onChange={(e) => {
+              setCondition((prevState) => ({
+                ...prevState,
+                year: [
+                  e.value as number,
+                  prevState.year ? prevState.year[MAX] : yearMax,
+                ],
+              }));
+            }}
+          />
+        </div>
+        <>~</>
+        <div>
+          <Select
+            options={year}
+            selected={
+              condition.year
+                ? condition.year[MAX].toString()
+                : yearMax.toString()
+            }
+            onChange={(e) => {
+              setCondition((prevState) => ({
+                ...prevState,
+                year: [
+                  prevState.year ? prevState.year[MIN] : yearMin,
+                  e.value as number,
+                ],
+              }));
+            }}
+          />
+        </div>
+      </div>
+      <div className="divider mx-4 mt-6 text-gray-700 text-sm" />
       <div className={"mx-4 mt-8 flex justify-between"}>
         <div>
           <div className={"w-36"}>

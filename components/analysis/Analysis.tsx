@@ -10,6 +10,7 @@ import { MIN, MAX } from "@/interfaces/condition";
 export const Analysis = () => {
   const [condition, setCondition] = useState<ICondition>({
     raceName: undefined,
+    year: undefined,
     number: undefined,
     frame: undefined,
     popular: undefined,
@@ -30,7 +31,10 @@ export const Analysis = () => {
     const raceId = res.data[0].race_id;
     const where = {
       race_id: raceId,
-      year: { gte: undefined, lte: undefined },
+      year: {
+        gte: Number(condition.year ? [MIN] : undefined),
+        lte: Number(condition.year ? [MAX] : undefined),
+      },
       OR: [
         { number: { in: condition.number?.map(Number) } },
         { frame: { in: condition.frame?.map(Number) } },

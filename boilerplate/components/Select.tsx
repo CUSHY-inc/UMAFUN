@@ -12,6 +12,7 @@ export const Select = ({
   selected,
   onChange,
   className,
+  style,
   filter = false,
 }: {
   options: string[];
@@ -19,6 +20,7 @@ export const Select = ({
   selected: string | undefined;
   onChange: (event: DropdownChangeEvent) => void;
   className?: string;
+  style?: React.CSSProperties | undefined;
   filter?: boolean;
 }) => {
   return (
@@ -28,6 +30,7 @@ export const Select = ({
       value={selected}
       placeholder={label && label}
       className={twMerge("w-full text-sm", className)}
+      style={style}
       filter={filter}
     />
   );
