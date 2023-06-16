@@ -1,27 +1,30 @@
 import { twMerge } from "tailwind-merge";
-import { MultiSelect as PrimeReactMultiSelect } from "primereact/multiselect";
+import {
+  MultiSelectChangeEvent,
+  MultiSelect as PrimeReactMultiSelect,
+} from "primereact/multiselect";
 import React from "react";
-import { Dropdown } from "primereact/dropdown";
+import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 
 export const Select = ({
   options,
   label,
   selected,
-  setSelected,
+  onChange,
   className,
   filter = false,
 }: {
   options: string[];
   label?: string;
-  selected: string | null;
-  setSelected: React.Dispatch<React.SetStateAction<string | null>>;
+  selected: string | undefined;
+  onChange: (event: DropdownChangeEvent) => void;
   className?: string;
   filter?: boolean;
 }) => {
   return (
     <Dropdown
       options={options}
-      onChange={(e) => setSelected(e.value)}
+      onChange={onChange}
       value={selected}
       placeholder={label && label}
       className={twMerge("w-full text-sm", className)}
@@ -31,13 +34,13 @@ export const Select = ({
 };
 
 export type MultiSelectType = {
-  name: string;
+  value: string;
 }[];
 export const MultiSelect = ({
   options,
   label,
   selected,
-  setSelected,
+  onChange,
   display = "comma",
   className,
   style,
@@ -45,15 +48,15 @@ export const MultiSelect = ({
 }: {
   options: string[];
   label: string;
-  selected: MultiSelectType | null;
-  setSelected: React.Dispatch<React.SetStateAction<MultiSelectType | null>>;
+  selected: MultiSelectType | undefined;
+  onChange: (event: MultiSelectChangeEvent) => void;
   display?: "comma" | "chip" | undefined;
   className?: string;
   style?: Object;
   flex?: boolean;
 }) => {
   const customOptions: MultiSelectType = options?.map((option) => ({
-    name: option,
+    value: option,
   }));
 
   return (
@@ -61,11 +64,9 @@ export const MultiSelect = ({
       <span className="p-float-label">
         <PrimeReactMultiSelect
           value={selected}
-          onChange={(e) => setSelected(e.value)}
-          onFocus={(e) => console.log(e)}
-          onBlur={(e) => console.log(e)}
+          onChange={onChange}
           options={customOptions}
-          optionLabel="name"
+          optionLabel="value"
           className={twMerge("w-full text-sm", className)}
           style={style}
           display={display}

@@ -3,25 +3,25 @@ import { Slider, SliderChangeEvent } from "primereact/slider";
 
 export const RangeSlider = ({
   value,
-  setValue,
+  onChange,
   min,
   max,
   step,
+  className,
 }: {
-  value: [number, number];
-  setValue: React.Dispatch<React.SetStateAction<[number, number]>>;
+  value: [number, number] | undefined;
+  onChange: (event: SliderChangeEvent) => void;
   min?: number;
   max?: number;
   step?: number;
+  className?: string;
 }) => {
   return (
     <div className="card flex justify-content-center">
       <Slider
         value={value}
-        onChange={(e: SliderChangeEvent) =>
-          setValue(e.value as [number, number])
-        }
-        className="w-14rem"
+        onChange={onChange}
+        className={className}
         range
         min={min}
         max={max}

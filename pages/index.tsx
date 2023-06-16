@@ -1,5 +1,5 @@
-import { Condition } from "@/components/analytics/Condition";
+import { Analysis } from "@/components/analysis/Analysis";
 
 export default function Page() {
-  return <Condition />;
+  return <Analysis />;
 }
