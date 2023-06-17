@@ -3,11 +3,7 @@ import { ICondition, MAX, MIN, IResult } from "@/interfaces/analysis";
 import axios from "axios";
 import { mgt_race_result } from "@/node_modules/.prisma/client/index";
 
-export const createWhere = async (condition: ICondition) => {
-  const res = await axios.post("/api/db/raceIds", {
-    race_name: condition.raceName,
-  });
-  const raceId = res.data[0].race_id;
+export const createWhere = (condition: ICondition) => {
   const where = {
     race_id: condition.raceId,
     year: {

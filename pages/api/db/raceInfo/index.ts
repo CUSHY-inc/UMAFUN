@@ -6,15 +6,17 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const prisma = new PrismaClient();
-  try {
-    switch (req.method) {
-      case "GET":
-        const raceIds = await prisma.mgt_race_info.findMany();
-        return res.json(raceIds);
+  switch (req.method) {
+    case "GET": {
+      const raceIds = await prisma.mgt_race_info.findMany();
+      return res.json(raceIds);
     }
-  } catch (error) {
-    return res.status(500).json(error);
-  } finally {
-    await prisma.$disconnect();
+    case "POST": {
+      const where = req.body;
+      const raceIds = await prisma.mgt_race_info.findMany({
+        where: where,
+      });
+      return res.json(raceIds);
+    }
   }
 }
