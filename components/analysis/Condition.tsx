@@ -60,11 +60,10 @@ export const Condition = ({
       })
     );
   const lastRank = [...Array(lastRankMax)].map((_, i) => (i + 1).toString());
-  console.log({ data });
 
   return (
     <>
-      <div className="mx-4 mt-4">
+      <div>
         <Select
           options={raceName}
           label="レース名を選択"
@@ -83,7 +82,7 @@ export const Condition = ({
           filter={true}
         />
       </div>
-      <div className="mx-4 mt-6 flex items-center gap-x-8">
+      <div className="mt-6 flex items-center gap-x-8">
         <div>
           <Select
             options={year}
@@ -124,8 +123,8 @@ export const Condition = ({
           />
         </div>
       </div>
-      <div className="divider mx-4 mt-6 text-gray-700 text-sm" />
-      <div className={"mx-4 mt-8 flex justify-between"}>
+      <div className="divider mt-6 text-gray-700 text-sm" />
+      <div className={"mt-8 flex justify-around gap-x-4"}>
         <div>
           <div className={"w-36"}>
             <MultiSelect

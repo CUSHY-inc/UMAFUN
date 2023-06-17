@@ -11,7 +11,7 @@ export const Card = ({
   return (
     <div
       className={twMerge(
-        "rounded-lg shadow-even mx-4 py-8 px-2 bg-white",
+        "rounded-lg shadow-even mx-4 py-8 px-4 bg-white",
         className
       )}
     >

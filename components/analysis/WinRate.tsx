@@ -1,5 +1,3 @@
-import { mgt_race_result } from "@/node_modules/.prisma/client/index";
-import { twMerge } from "tailwind-merge";
 import { ICondition, IResult, MAX, MIN } from "@/interfaces/analysis";
 import axios from "axios";
 import useSWR from "swr";
@@ -23,19 +21,11 @@ type WinRecordType = {
   outside: number;
 };
 export const WinRate = ({
-  condition,
   results,
   targetRaceId,
-  // targetYear,
-  targetRaceResult,
-  className,
 }: {
-  condition: ICondition;
   results: IResult[];
   targetRaceId: number;
-  // targetYear: [number, number] | undefined;
-  targetRaceResult: IResult[];
-  className?: string;
 }) => {
   const { data: raceInfo, error } = useSWR(
     { url: "/api/db/raceInfo", method: "GET" },
@@ -62,14 +52,12 @@ export const WinRate = ({
             const year = new Date(item.date).getFullYear();
             return item.race_id === targetRaceId && year === result.year;
           });
-          // console.log({ source, target, result });
           if (source[0].date <= target[0].date) {
             record = await fetchRecord(
               result.name!,
               targetRaceId!,
               result.year!
             );
-            // console.log({ record });
           } else {
             record = await fetchRecord(
               result.name!,
@@ -77,33 +65,27 @@ export const WinRate = ({
               result.year! + 1
             );
           }
-          console.log({ record });
           if (record) {
             switch (record.data[0].arrive) {
               case 1: {
-                console.log(1);
                 winRate.first++;
                 break;
               }
               case 2: {
-                console.log(2);
                 winRate.second++;
                 break;
               }
               case 3: {
-                console.log(3);
                 winRate.third++;
                 break;
               }
               default: {
-                console.log("a");
                 winRate.outside++;
                 break;
               }
             }
           }
         }
-        console.log({ winRate });
         setWinRate(winRate);
       } else {
         setWinRate(undefined);
@@ -111,14 +93,11 @@ export const WinRate = ({
     };
     calcRate();
   }, [results, raceInfo]);
-  // for (let year = targetYear![MIN]; year <= targetYear![MAX]; year++) {
-  // }
 
   if (!raceInfo) {
     return;
   }
 
-  // console.log({ raceInfo, results, targetRaceResult });
   return (
     <>
       <div className="flex justify-between mx-4">

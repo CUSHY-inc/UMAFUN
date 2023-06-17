@@ -29,8 +29,10 @@ export const Analysis = () => {
 
   const handleClick = async () => {
     const where = createWhere(condition);
+    console.log({ where });
     const res = await axios.post("/api/db/raceResults", where);
     const results = createResult(res.data);
+    console.log(results);
     setResults(results);
   };
 
@@ -38,22 +40,19 @@ export const Analysis = () => {
     <>
       <Card>
         <Condition condition={condition} setCondition={setCondition} />
-        <div className="card flex justify-content-center mt-8 mx-16">
-          <Button label="検索" onClick={handleClick} />
+        <div className="flex justify-center mt-8 w-full">
+          <div className="card w-48">
+            <Button label="検索" onClick={handleClick} />
+          </div>
         </div>
       </Card>
-      <div className="mx-4 mb-8">
+      <div className="mb-8">
         {results && (
           <>
             <Card className="mt-8 py-4">
-              <WinRate
-                condition={condition}
-                results={results!}
-                targetRaceId={condition.raceId!}
-                targetRaceResult={results!}
-              />
+              <WinRate results={results!} targetRaceId={condition.raceId!} />
             </Card>
-            <div className="mt-8">
+            <div className="mt-8 mx-4">
               <div className="mb-2 ml-2 text-sm">[{condition.raceName}]</div>
               <div className="overflow-auto">
                 <ResultTable data={results} />
