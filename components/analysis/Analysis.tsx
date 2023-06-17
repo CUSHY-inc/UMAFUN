@@ -1,12 +1,9 @@
 import { useState } from "react";
 import { Condition } from "./Condition";
-import { ICondition } from "@/interfaces/condition";
+import { ICondition, IResult } from "@/interfaces/analysis";
 import { Button } from "primereact/button";
-import useSWR from "swr";
-import { fetcher } from "@/boilerplate/utils/api";
 import axios from "axios";
-import { MIN, MAX } from "@/interfaces/condition";
-import { createWhere } from "@/utils/analysis";
+import { createWhere, createResult } from "@/utils/analysis";
 import { ResultTable } from "@/components/analysis/Table";
 
 export const Analysis = () => {
@@ -25,10 +22,15 @@ export const Analysis = () => {
     odds: undefined,
     horseWeight: undefined,
   });
+  const [result, setResult] = useState<IResult[]>();
 
   const handleClick = async () => {
     const where = await createWhere(condition);
     const res = await axios.post("/api/db/raceResults", where);
+    console.log(res.data);
+    const result = createResult(res.data);
+    setResult(result);
+    console.log({ result });
   };
 
   return (
@@ -39,9 +41,7 @@ export const Analysis = () => {
           <Button label="検索" onClick={handleClick} />
         </div>
       </div>
-      {/* <div className="mx-4 mb-8">
-        <ResultTable />
-      </div> */}
+      <div className="mx-4 mb-8">{result && <ResultTable data={result} />}</div>
     </>
   );
 };

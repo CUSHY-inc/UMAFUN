@@ -1,5 +1,7 @@
-import { ICondition, MAX, MIN } from "@/interfaces/condition";
+import { Condition } from "@/components/analysis/Condition";
+import { ICondition, MAX, MIN, IResult } from "@/interfaces/analysis";
 import axios from "axios";
+import { mgt_race_result } from "@/node_modules/.prisma/client/index";
 
 export const createWhere = async (condition: ICondition) => {
   const res = await axios.post("/api/db/raceIds", {
@@ -40,4 +42,27 @@ export const createWhere = async (condition: ICondition) => {
     ],
   };
   return where;
+};
+
+export const createResult = (data: mgt_race_result[]) => {
+  const result: IResult[] = data.map((val) => {
+    return {
+      year: val.year,
+      arrive: val.arrive,
+      frame: val.frame,
+      number: val.number,
+      name: val.name,
+      genderOld: val.gender_old,
+      weight: val.horse_weight,
+      jockey: val.jockey,
+      time: val.time,
+      margin: val.margin,
+      popular: val.popular,
+      odds: val.odds,
+      last: val.last,
+      lastRank: val.last_rank,
+      passing: val.passing,
+    };
+  });
+  return result;
 };

@@ -1,38 +1,19 @@
 import {
   ColumnDef,
-  Row,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { Table } from "react-daisyui";
 import { TbodyEx, TheadEx } from "@/boilerplate/components/Table";
-import { ICondition } from "@/interfaces/condition";
+import { IResult } from "@/interfaces/analysis";
 
-type TableData = {
-  year: number;
-  arrive: number | undefined;
-  frame: number;
-  number: number;
-  name: string;
-  genderOld: string;
-  weight: number;
-  jockey: string;
-  time: number | undefined;
-  margin: string | undefined;
-  popular: number;
-  odds: number;
-  last: number | undefined;
-  lastRank: number | undefined;
-  passing: string | undefined;
-};
-
-const columns: ColumnDef<TableData>[] = [
+const columns: ColumnDef<IResult>[] = [
   {
     accessorKey: "year",
     header: "開催年",
     enableSorting: false,
     cell: ({ getValue }) => {
-      const value = getValue<string>();
+      const value = getValue<string | null>();
       return <td>{value}</td>;
     },
   },
@@ -41,7 +22,7 @@ const columns: ColumnDef<TableData>[] = [
     header: "着順",
     enableSorting: false,
     cell: ({ getValue }) => {
-      const value = getValue<number | undefined>();
+      const value = getValue<number | null>();
       return <td>{value}</td>;
     },
   },
@@ -50,7 +31,7 @@ const columns: ColumnDef<TableData>[] = [
     header: "枠",
     enableSorting: false,
     cell: ({ getValue }) => {
-      const value = getValue<number>();
+      const value = getValue<number | null>();
       return <td>{value}</td>;
     },
   },
@@ -59,7 +40,7 @@ const columns: ColumnDef<TableData>[] = [
     header: "馬番",
     enableSorting: false,
     cell: ({ getValue }) => {
-      const value = getValue<number>();
+      const value = getValue<number | null>();
       return <td>{value}</td>;
     },
   },
@@ -68,7 +49,7 @@ const columns: ColumnDef<TableData>[] = [
     header: "馬名",
     enableSorting: false,
     cell: ({ getValue }) => {
-      const value = getValue<string>();
+      const value = getValue<string | null>();
       return <td>{value}</td>;
     },
   },
@@ -77,7 +58,7 @@ const columns: ColumnDef<TableData>[] = [
     header: "性齢",
     enableSorting: false,
     cell: ({ getValue }) => {
-      const value = getValue<string>();
+      const value = getValue<string | null>();
       return <td>{value}</td>;
     },
   },
@@ -86,7 +67,7 @@ const columns: ColumnDef<TableData>[] = [
     header: "斤量",
     enableSorting: false,
     cell: ({ getValue }) => {
-      const value = getValue<number>();
+      const value = getValue<number | null>();
       return <td>{value}</td>;
     },
   },
@@ -95,7 +76,7 @@ const columns: ColumnDef<TableData>[] = [
     header: "騎手",
     enableSorting: false,
     cell: ({ getValue }) => {
-      const value = getValue<string>();
+      const value = getValue<string | null>();
       return <td>{value}</td>;
     },
   },
@@ -104,7 +85,7 @@ const columns: ColumnDef<TableData>[] = [
     header: "タイム",
     enableSorting: false,
     cell: ({ getValue }) => {
-      const value = getValue<number | undefined>();
+      const value = getValue<number | null>();
       return <td>{value}</td>;
     },
   },
@@ -113,7 +94,7 @@ const columns: ColumnDef<TableData>[] = [
     header: "着差",
     enableSorting: false,
     cell: ({ getValue }) => {
-      const value = getValue<string>();
+      const value = getValue<string | null>();
       return <td>{value}</td>;
     },
   },
@@ -122,7 +103,7 @@ const columns: ColumnDef<TableData>[] = [
     header: "人気",
     enableSorting: false,
     cell: ({ getValue }) => {
-      const value = getValue<number>();
+      const value = getValue<number | null>();
       return <td>{value}</td>;
     },
   },
@@ -131,7 +112,7 @@ const columns: ColumnDef<TableData>[] = [
     header: "単勝オッズ",
     enableSorting: false,
     cell: ({ getValue }) => {
-      const value = getValue<number>();
+      const value = getValue<number | null>();
       return <td>{value}</td>;
     },
   },
@@ -140,7 +121,7 @@ const columns: ColumnDef<TableData>[] = [
     header: "上り",
     enableSorting: false,
     cell: ({ getValue }) => {
-      const value = getValue<number | undefined>();
+      const value = getValue<number | null>();
       return <td>{value}</td>;
     },
   },
@@ -149,7 +130,7 @@ const columns: ColumnDef<TableData>[] = [
     header: "上り順",
     enableSorting: false,
     cell: ({ getValue }) => {
-      const value = getValue<number | undefined>();
+      const value = getValue<number | null>();
       return <td>{value}</td>;
     },
   },
@@ -158,23 +139,13 @@ const columns: ColumnDef<TableData>[] = [
     header: "通過",
     enableSorting: false,
     cell: ({ getValue }) => {
-      const value = getValue<string>();
+      const value = getValue<string | null>();
       return <td>{value}</td>;
     },
   },
 ];
 
-export const ResultTable = ({ data }: { data: TableData[] }) => {
-  // const data: TableData[] = [
-  //   {
-  //     a: "a_1",
-  //     b: "b_1",
-  //   },
-  //   {
-  //     a: "a_2",
-  //     b: "b_2",
-  //   },
-  // ];
+export const ResultTable = ({ data }: { data: IResult[] }) => {
   const table = useReactTable({
     data,
     columns,
@@ -187,7 +158,7 @@ export const ResultTable = ({ data }: { data: TableData[] }) => {
         thClassName="normal-case"
         className="bg-gray-200"
       />
-      <TbodyEx<TableData>
+      <TbodyEx<IResult>
         table={table}
         // pending={pending}
         // mobileRowRender={mobileRowRender}

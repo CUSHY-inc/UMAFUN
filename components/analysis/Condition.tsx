@@ -5,7 +5,7 @@ import { mgt_race_id } from "@prisma/client";
 import clsx from "clsx";
 import { RangeSlider } from "@/boilerplate/components/Slider";
 import { InputNumber } from "primereact/inputnumber";
-import { ICondition } from "@/interfaces/condition";
+import { ICondition } from "@/interfaces/analysis";
 
 const yearMax = 2022;
 const yearMin = 2011;

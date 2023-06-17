@@ -17,3 +17,21 @@ export interface ICondition {
   odds: [number, number] | undefined;
   horseWeight: [number, number] | undefined;
 }
+
+export interface IResult {
+  year: number | null;
+  arrive: number | null;
+  frame: number | null;
+  number: number | null;
+  name: string | null;
+  genderOld: string | null;
+  weight: string | null;
+  jockey: string | null;
+  time: number | null;
+  margin: string | null;
+  popular: number | null;
+  odds: number | null;
+  last: number | null;
+  lastRank: number | null;
+  passing: string | null;
+}
