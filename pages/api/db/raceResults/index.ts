@@ -9,10 +9,10 @@ export default async function handler(
   switch (req.method) {
     case "POST": {
       const where = req.body;
-      const raceResult = await prisma.mgt_race_result.findMany({
+      const results = await prisma.mgt_race_result.findMany({
         where: where,
       });
-      return res.json(raceResult);
+      return res.json(results);
     }
   }
 }
