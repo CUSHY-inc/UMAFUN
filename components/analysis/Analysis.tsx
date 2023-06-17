@@ -5,7 +5,7 @@ import { Button } from "primereact/button";
 import axios from "axios";
 import { createWhere, createResult } from "@/utils/analysis";
 import { ResultTable } from "@/components/analysis/Table";
-import { WinRateCard } from "./WinRateCard";
+import { WinRate } from "./WinRate";
 import { Card } from "@/components/common/Card";
 
 export const Analysis = () => {
@@ -45,8 +45,8 @@ export const Analysis = () => {
       <div className="mx-4 mb-8">
         {results && (
           <>
-            <Card className="mt-8">
-              <WinRateCard
+            <Card className="mt-8 py-4">
+              <WinRate
                 condition={condition}
                 results={results!}
                 targetRaceId={condition.raceId!}
