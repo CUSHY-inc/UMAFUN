@@ -13,6 +13,9 @@ module.exports = withMT({
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      boxShadow: {
+        even: "0 0 20px rgba(0, 0, 0, 0.1)",
+      },
     },
   },
   plugins: [require("daisyui")],

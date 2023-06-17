@@ -9,7 +9,7 @@ export const createWhere = async (condition: ICondition) => {
   });
   const raceId = res.data[0].race_id;
   const where = {
-    race_id: raceId,
+    race_id: condition.raceId,
     year: {
       gte: condition.year ? condition.year[MIN] : undefined,
       lte: condition.year ? condition.year[MAX] : undefined,
@@ -47,6 +47,7 @@ export const createWhere = async (condition: ICondition) => {
 export const createResult = (data: mgt_race_result[]) => {
   const result: IResult[] = data.map((val) => {
     return {
+      raceId: val.race_id,
       year: val.year,
       arrive: val.arrive,
       frame: val.frame,

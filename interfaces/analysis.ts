@@ -4,6 +4,7 @@ export const MIN = 0;
 export const MAX = 1;
 export interface ICondition {
   raceName: string | undefined;
+  raceId: number | undefined;
   year: [number, number] | undefined;
   number: MultiSelectType | undefined;
   frame: MultiSelectType | undefined;
@@ -19,6 +20,7 @@ export interface ICondition {
 }
 
 export interface IResult {
+  raceId: number;
   year: number | null;
   arrive: number | null;
   frame: number | null;

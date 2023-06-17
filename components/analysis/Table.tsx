@@ -14,7 +14,7 @@ const columns: ColumnDef<IResult>[] = [
     enableSorting: false,
     cell: ({ getValue }) => {
       const value = getValue<string | null>();
-      return <td>{value}</td>;
+      return <td style={{ whiteSpace: "nowrap" }}>{value}</td>;
     },
   },
   {
@@ -23,7 +23,7 @@ const columns: ColumnDef<IResult>[] = [
     enableSorting: false,
     cell: ({ getValue }) => {
       const value = getValue<number | null>();
-      return <td>{value}</td>;
+      return <td style={{ whiteSpace: "nowrap" }}>{value}</td>;
     },
   },
   {
@@ -32,7 +32,7 @@ const columns: ColumnDef<IResult>[] = [
     enableSorting: false,
     cell: ({ getValue }) => {
       const value = getValue<number | null>();
-      return <td>{value}</td>;
+      return <td style={{ whiteSpace: "nowrap" }}>{value}</td>;
     },
   },
   {
@@ -41,7 +41,7 @@ const columns: ColumnDef<IResult>[] = [
     enableSorting: false,
     cell: ({ getValue }) => {
       const value = getValue<number | null>();
-      return <td>{value}</td>;
+      return <td style={{ whiteSpace: "nowrap" }}>{value}</td>;
     },
   },
   {
@@ -50,7 +50,7 @@ const columns: ColumnDef<IResult>[] = [
     enableSorting: false,
     cell: ({ getValue }) => {
       const value = getValue<string | null>();
-      return <td>{value}</td>;
+      return <td style={{ whiteSpace: "nowrap" }}>{value}</td>;
     },
   },
   {
@@ -59,7 +59,7 @@ const columns: ColumnDef<IResult>[] = [
     enableSorting: false,
     cell: ({ getValue }) => {
       const value = getValue<string | null>();
-      return <td>{value}</td>;
+      return <td style={{ whiteSpace: "nowrap" }}>{value}</td>;
     },
   },
   {
@@ -68,7 +68,7 @@ const columns: ColumnDef<IResult>[] = [
     enableSorting: false,
     cell: ({ getValue }) => {
       const value = getValue<number | null>();
-      return <td>{value}</td>;
+      return <td style={{ whiteSpace: "nowrap" }}>{value}</td>;
     },
   },
   {
@@ -77,7 +77,7 @@ const columns: ColumnDef<IResult>[] = [
     enableSorting: false,
     cell: ({ getValue }) => {
       const value = getValue<string | null>();
-      return <td>{value}</td>;
+      return <td style={{ whiteSpace: "nowrap" }}>{value}</td>;
     },
   },
   {
@@ -86,7 +86,7 @@ const columns: ColumnDef<IResult>[] = [
     enableSorting: false,
     cell: ({ getValue }) => {
       const value = getValue<number | null>();
-      return <td>{value}</td>;
+      return <td style={{ whiteSpace: "nowrap" }}>{value}</td>;
     },
   },
   {
@@ -95,7 +95,7 @@ const columns: ColumnDef<IResult>[] = [
     enableSorting: false,
     cell: ({ getValue }) => {
       const value = getValue<string | null>();
-      return <td>{value}</td>;
+      return <td style={{ whiteSpace: "nowrap" }}>{value}</td>;
     },
   },
   {
@@ -104,7 +104,7 @@ const columns: ColumnDef<IResult>[] = [
     enableSorting: false,
     cell: ({ getValue }) => {
       const value = getValue<number | null>();
-      return <td>{value}</td>;
+      return <td style={{ whiteSpace: "nowrap" }}>{value}</td>;
     },
   },
   {
@@ -113,7 +113,7 @@ const columns: ColumnDef<IResult>[] = [
     enableSorting: false,
     cell: ({ getValue }) => {
       const value = getValue<number | null>();
-      return <td>{value}</td>;
+      return <td style={{ whiteSpace: "nowrap" }}>{value}</td>;
     },
   },
   {
@@ -122,7 +122,7 @@ const columns: ColumnDef<IResult>[] = [
     enableSorting: false,
     cell: ({ getValue }) => {
       const value = getValue<number | null>();
-      return <td>{value}</td>;
+      return <td style={{ whiteSpace: "nowrap" }}>{value}</td>;
     },
   },
   {
@@ -131,7 +131,7 @@ const columns: ColumnDef<IResult>[] = [
     enableSorting: false,
     cell: ({ getValue }) => {
       const value = getValue<number | null>();
-      return <td>{value}</td>;
+      return <td style={{ whiteSpace: "nowrap" }}>{value}</td>;
     },
   },
   {
@@ -140,7 +140,7 @@ const columns: ColumnDef<IResult>[] = [
     enableSorting: false,
     cell: ({ getValue }) => {
       const value = getValue<string | null>();
-      return <td>{value}</td>;
+      return <td style={{ whiteSpace: "nowrap" }}>{value}</td>;
     },
   },
 ];

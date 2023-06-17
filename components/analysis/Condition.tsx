@@ -60,6 +60,7 @@ export const Condition = ({
       })
     );
   const lastRank = [...Array(lastRankMax)].map((_, i) => (i + 1).toString());
+  console.log({ data });
 
   return (
     <>
@@ -69,9 +70,14 @@ export const Condition = ({
           label="レース名を選択"
           selected={condition.raceName}
           onChange={(e) => {
+            const raceName = e.value;
+            const race = data.find(
+              (r: mgt_race_id) => r.race_name === raceName
+            );
             setCondition((prevState) => ({
               ...prevState,
-              raceName: e.value,
+              raceName: raceName,
+              raceId: race.race_id,
             }));
           }}
           filter={true}
