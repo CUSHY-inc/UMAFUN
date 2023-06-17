@@ -90,7 +90,7 @@ export const Condition = ({
               setCondition((prevState) => ({
                 ...prevState,
                 year: [
-                  e.value as number,
+                  Number(e.value),
                   prevState.year ? prevState.year[MAX] : yearMax,
                 ],
               }));
@@ -111,7 +111,7 @@ export const Condition = ({
                 ...prevState,
                 year: [
                   prevState.year ? prevState.year[MIN] : yearMin,
-                  e.value as number,
+                  Number(e.value),
                 ],
               }));
             }}

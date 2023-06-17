@@ -7,6 +7,7 @@ import { fetcher } from "@/boilerplate/utils/api";
 import axios from "axios";
 import { MIN, MAX } from "@/interfaces/condition";
 import { createWhere } from "@/utils/analysis";
+import { ResultTable } from "@/components/analysis/Table";
 
 export const Analysis = () => {
   const [condition, setCondition] = useState<ICondition>({
@@ -31,11 +32,16 @@ export const Analysis = () => {
   };
 
   return (
-    <div className="rounded-lg shadow mx-4 py-8 mb-8 bg-white">
-      <Condition condition={condition} setCondition={setCondition} />
-      <div className="card flex justify-content-center mt-8 mx-16">
-        <Button label="検索" onClick={handleClick} />
+    <>
+      <div className="rounded-lg shadow mx-4 py-8 mb-8 bg-white">
+        <Condition condition={condition} setCondition={setCondition} />
+        <div className="card flex justify-content-center mt-8 mx-16">
+          <Button label="検索" onClick={handleClick} />
+        </div>
       </div>
-    </div>
+      {/* <div className="mx-4 mb-8">
+        <ResultTable />
+      </div> */}
+    </>
   );
 };

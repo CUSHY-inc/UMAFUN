@@ -9,8 +9,8 @@ export const createWhere = async (condition: ICondition) => {
   const where = {
     race_id: raceId,
     year: {
-      gte: Number(condition.year ? condition.year[MIN] : undefined),
-      lte: Number(condition.year ? condition.year[MAX] : undefined),
+      gte: condition.year ? condition.year[MIN] : undefined,
+      lte: condition.year ? condition.year[MAX] : undefined,
     },
     OR: [
       { number: { in: condition.number?.map(Number) } },

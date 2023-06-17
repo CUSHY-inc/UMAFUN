@@ -12,6 +12,7 @@ export default async function handler(
       const results = await prisma.mgt_race_result.findMany({
         where: where,
       });
+      console.log({ where });
       return res.json(results);
     }
   }
