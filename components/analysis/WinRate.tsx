@@ -2,15 +2,26 @@ import { ICondition, IResult, MAX, MIN } from "@/interfaces/analysis";
 import axios from "axios";
 import useSWR from "swr";
 import { fetcher } from "@/boilerplate/utils/api";
-import { mgt_race_info } from "@prisma/client";
+import { mgt_race_info, mgt_race_result } from "@prisma/client";
 import { useEffect, useState } from "react";
 
-const fetchRecord = async (name: string, raceId: number, year: number) => {
-  const record = await axios.post("/api/db/raceResults", {
-    name: name,
-    race_id: raceId,
-    year: year,
-  });
+const fetchRecord = (
+  name: string,
+  raceId: number,
+  year: number,
+  targetResult: mgt_race_result[]
+) => {
+  console.log({ targetResult });
+  const record = targetResult.filter(
+    (result) =>
+      result.name === name && result.race_id === raceId && result.year === year
+  );
+  // const record = axios.post("/api/db/raceResults", {
+  //   name: name,
+  //   race_id: raceId,
+  //   year: year,
+  // });
+  console.log({ record });
   return record;
 };
 
@@ -27,15 +38,25 @@ export const WinRate = ({
   results: IResult[];
   targetRaceId: number;
 }) => {
-  const { data: raceInfo, error } = useSWR(
+  const [winRate, setWinRate] = useState<WinRecordType | undefined>();
+  const { data: raceInfo, error: raceInfoError } = useSWR(
     { url: "/api/db/raceInfo", method: "GET" },
     fetcher
   );
-  const [winRate, setWinRate] = useState<WinRecordType | undefined>();
+  const { data: targetRace, error: targetRaceError } = useSWR(
+    {
+      url: "/api/db/raceResults",
+      method: "POST",
+      body: {
+        race_id: targetRaceId,
+      },
+    },
+    fetcher
+  );
 
   useEffect(() => {
-    const calcRate = async () => {
-      if (results && raceInfo) {
+    const calcRate = () => {
+      if (results && raceInfo && targetRace) {
         let winRate: WinRecordType = {
           first: 0,
           second: 0,
@@ -53,20 +74,22 @@ export const WinRate = ({
             return item.race_id === targetRaceId && year === result.year;
           });
           if (source[0].date <= target[0].date) {
-            record = await fetchRecord(
+            record = fetchRecord(
               result.name!,
               targetRaceId!,
-              result.year!
+              result.year!,
+              targetRace
             );
           } else {
-            record = await fetchRecord(
+            record = fetchRecord(
               result.name!,
               targetRaceId!,
-              result.year! + 1
+              result.year! + 1,
+              targetRace
             );
           }
           if (record) {
-            switch (record.data[0].arrive) {
+            switch (record[0].arrive) {
               case 1: {
                 winRate.first++;
                 break;
@@ -92,7 +115,7 @@ export const WinRate = ({
       }
     };
     calcRate();
-  }, [results, raceInfo]);
+  }, [results, raceInfo, targetRace]);
 
   if (!raceInfo) {
     return;
