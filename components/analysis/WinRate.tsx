@@ -107,7 +107,7 @@ export const WinRate = ({
       }
     };
     calcRate();
-  }, [results, raceInfo, targetRace]);
+  }, [results, raceInfo, targetRace, targetRaceId]);
 
   if (!raceInfo) {
     return;

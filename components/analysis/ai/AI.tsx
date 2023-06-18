@@ -73,7 +73,7 @@ export const AI = () => {
             {}
           );
           return (
-            <Card className="mt-4 mx-4 px-2 pt-2">
+            <Card className="mt-4 mx-4 px-2 pt-2" key={year}>
               <div className="text-lg font-bold">{year}</div>
               {Object.entries(gResults).map(([raceName, result]) => (
                 <>

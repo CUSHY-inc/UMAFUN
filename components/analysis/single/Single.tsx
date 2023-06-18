@@ -62,7 +62,7 @@ export const Single = () => {
         {results && (
           <>
             <Card className="mt-8 mx-4 py-4 px-2">
-              <WinRate results={results!} targetRaceId={targetRaceId!} />
+              <WinRate results={results!} targetRaceId={results[0].raceId} />
             </Card>
             <div className="mt-8 mx-4">
               <div className="mb-2 ml-2 text-sm">[{condition.raceName}]</div>

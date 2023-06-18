@@ -35,7 +35,7 @@ export const Condition = ({
       ...prevState,
       arrive: arr,
     }));
-  }, [arriveArray]);
+  }, [arriveArray, setCondition]);
 
   return (
     <>
