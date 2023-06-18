@@ -153,11 +153,7 @@ export const ResultTable = ({ data }: { data: IResult[] }) => {
   });
   return (
     <Table className="w-full">
-      <TheadEx
-        table={table}
-        thClassName="normal-case"
-        className="bg-gray-200"
-      />
+      <TheadEx table={table} thClassName="normal-case" className="" />
       <TbodyEx<IResult>
         table={table}
         // pending={pending}

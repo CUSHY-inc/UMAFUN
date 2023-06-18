@@ -55,7 +55,7 @@ export const Condition = ({
               raceId: race.race_id,
             }));
           }}
-          filter={true}
+          // filter={true}
         />
       </div>
       <div className="mt-6 flex items-center gap-x-8">
