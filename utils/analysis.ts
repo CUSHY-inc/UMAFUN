@@ -1,7 +1,29 @@
-import { ICondition, MAX, MIN, IResult } from "@/interfaces/analysis";
+import { ICondition, IResult } from "@/interfaces/analysis";
 import { mgt_race_result } from "@/node_modules/.prisma/client/index";
 import { mgt_race_id, mgt_race_info } from "@prisma/client";
 import axios from "axios";
+
+export const yearMax = 2022;
+export const yearMin = 2011;
+export const numberMax = 24;
+export const frameMax = 8;
+export const popularMax = 24;
+export const arriveMax = 24;
+export const genderOldMin = 2;
+export const genderOldMax = 9;
+export const lastRankMax = 24;
+export const weightMax = 60;
+export const weightMin = 50;
+export const timeMax = 240;
+export const timeMin = 60;
+export const lastMax = 48;
+export const lastMin = 30;
+export const oddsMax = 200;
+export const oddsMin = 1;
+export const horseWeightMax = 580;
+export const horseWeightMin = 380;
+export const MIN = 0;
+export const MAX = 1;
 
 export const createWhere = (condition: ICondition) => {
   const where: any = {};

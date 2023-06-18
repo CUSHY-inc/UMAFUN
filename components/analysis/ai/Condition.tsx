@@ -4,12 +4,7 @@ import { Select } from "@/boilerplate/components/Select";
 import { mgt_race_id } from "@prisma/client";
 import { ICondition } from "@/interfaces/analysis";
 import { useEffect, useState } from "react";
-
-const yearMax = 2022;
-const yearMin = 2011;
-const arriveMax = 24;
-const MIN = 0;
-const MAX = 1;
+import { yearMax, yearMin, arriveMax, MIN, MAX } from "@/utils/analysis";
 
 export const Condition = ({
   condition,

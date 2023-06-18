@@ -6,28 +6,29 @@ import clsx from "clsx";
 import { RangeSlider } from "@/boilerplate/components/Slider";
 import { InputNumber } from "primereact/inputnumber";
 import { ICondition } from "@/interfaces/analysis";
-
-const yearMax = 2022;
-const yearMin = 2011;
-const numberMax = 24;
-const frameMax = 8;
-const popularMax = 24;
-const arriveMax = 24;
-const genderOldMin = 2;
-const genderOldMax = 9;
-const lastRankMax = 24;
-const weightMax = 60;
-const weightMin = 50;
-const timeMax = 240;
-const timeMin = 60;
-const lastMax = 48;
-const lastMin = 30;
-const oddsMax = 200;
-const oddsMin = 1;
-const horseWeightMax = 580;
-const horseWeightMin = 380;
-const MIN = 0;
-const MAX = 1;
+import {
+  yearMax,
+  yearMin,
+  numberMax,
+  frameMax,
+  popularMax,
+  arriveMax,
+  genderOldMin,
+  genderOldMax,
+  lastRankMax,
+  weightMax,
+  weightMin,
+  timeMax,
+  timeMin,
+  lastMax,
+  lastMin,
+  oddsMax,
+  oddsMin,
+  horseWeightMax,
+  horseWeightMin,
+  MIN,
+  MAX,
+} from "@/utils/analysis";
 
 export const Condition = ({
   condition,
