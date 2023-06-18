@@ -81,32 +81,19 @@ export const createResult = (data: mgt_race_result[]) => {
   return result;
 };
 
-export const searchOtherResults = async (results: IResult[]) => {
+export const searchOtherResults = async (srcResult: IResult[]) => {
   const res = await axios.get("/api/db/raceInfo");
   const raceInfo = res.data;
-  // console.log({ raceInfo });
-  // for (const result of results) {
-  //   console.log({ result });
-  // }
-  // console.log({ results });
-  // const years = results
-  //   .map((result) => result.year)
-  //   .filter((year): year is number => year !== null);
-  // const minYear = Math.min(...years);
-  // const maxYear = Math.max(...years);
-  // console.log(years, minYear, maxYear);
-  // for (let year = minYear; year <= maxYear; year++){
-  // }
-  const targetRaceId = results[0].raceId;
+  const targetRaceId = srcResult[0].raceId;
+  const yearResults = new Map<number, IResult[]>();
   const years = Array.from(
     new Set(
-      results
+      srcResult
         .map((result) => result.year)
         .filter((year): year is number => year !== null)
     )
   );
   years.sort((a, b) => b - a);
-  console.log({ years });
   for (const year of years) {
     const targetRaceDate = raceInfo
       .filter((record: mgt_race_info) => {
@@ -122,12 +109,38 @@ export const searchOtherResults = async (results: IResult[]) => {
         return recordYear === year && record.date <= targetRaceDate;
       })
       .map((record: mgt_race_info) => record.race_id);
-    const names = results
+    const names = srcResult
       .filter((result: IResult) => {
         return result.year == year;
       })
       .map((result: IResult) => result.name);
-    console.log({ raceIds, names });
+    const where = {
+      OR: [
+        {
+          race_id: {
+            in: raceIds,
+          },
+          name: {
+            in: names,
+          },
+          year: year,
+        },
+        {
+          race_id: {
+            not: {
+              in: raceIds,
+            },
+          },
+          name: {
+            in: names,
+          },
+          year: year - 1,
+        },
+      ],
+    };
+    const res = await axios.post("/api/db/raceResults", where);
+    const results = createResult(res.data);
+    yearResults.set(year, results);
   }
-  // console.log({ raceInfo, results });
+  return yearResults;
 };

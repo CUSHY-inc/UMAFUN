@@ -11,17 +11,10 @@ const fetchRecord = (
   year: number,
   targetResult: mgt_race_result[]
 ) => {
-  console.log({ targetResult });
   const record = targetResult.filter(
     (result) =>
       result.name === name && result.race_id === raceId && result.year === year
   );
-  // const record = axios.post("/api/db/raceResults", {
-  //   name: name,
-  //   race_id: raceId,
-  //   year: year,
-  // });
-  console.log({ record });
   return record;
 };
 

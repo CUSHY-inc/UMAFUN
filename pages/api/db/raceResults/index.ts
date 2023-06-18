@@ -13,6 +13,9 @@ export default async function handler(
         where: where,
         orderBy: [
           {
+            race_id: "asc",
+          },
+          {
             year: "desc",
           },
           {

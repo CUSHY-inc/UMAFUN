@@ -47,8 +47,6 @@ export const Single = () => {
     setTargetRaceId(condition.raceId);
   };
 
-  console.log({ condition });
-
   return (
     <>
       <Card className="mt-4 mx-4 py-8 px-4">

@@ -27,8 +27,6 @@ export const AI = () => {
     odds: undefined,
     horseWeight: undefined,
   });
-  const [results, setResults] = useState<IResult[]>();
-  const [targetRaceId, setTargetRaceId] = useState<number>();
   const toast = useRef<Toast>(null);
 
   const handleClick = async () => {
@@ -44,18 +42,13 @@ export const AI = () => {
     const where = createWhere(condition);
     const res = await axios.post("/api/db/raceResults", where);
     const results = createResult(res.data);
-    setResults(results);
-    setTargetRaceId(condition.raceId);
+    if (results) {
+      const yearResults = await searchOtherResults(results);
+      const entriesArray = Array.from(yearResults.entries());
+      const jsonString = JSON.stringify(entriesArray);
+      console.log(jsonString);
+    }
   };
-
-  useEffect(() => {
-    const exeAI = async () => {
-      if (results) {
-        searchOtherResults(results);
-      }
-    };
-    exeAI();
-  }, [results]);
 
   return (
     <>
@@ -68,21 +61,6 @@ export const AI = () => {
           </div>
         </div>
       </Card>
-      <div className="mb-8">
-        {results && (
-          <>
-            <Card className="mt-8 mx-4 py-4 px-2">
-              <WinRate results={results!} targetRaceId={targetRaceId!} />
-            </Card>
-            <div className="mt-8 mx-4">
-              <div className="mb-2 ml-2 text-sm">[{condition.raceName}]</div>
-              <div className="overflow-auto">
-                <ResultTable data={results} />
-              </div>
-            </div>
-          </>
-        )}
-      </div>
     </>
   );
 };
