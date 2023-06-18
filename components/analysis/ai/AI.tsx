@@ -2,11 +2,12 @@ import { Condition } from "./Condition";
 import { Card } from "@/components/common/Card";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
-import { ICondition } from "@/interfaces/analysis";
+import { ICondition, IResult } from "@/interfaces/analysis";
 import { useRef, useState } from "react";
 import { createWhere, createResult } from "@/utils/analysis";
 import axios from "axios";
 import { searchOtherResults } from "@/utils/analysis";
+import { ResultTable } from "./Table";
 
 export const AI = () => {
   const [condition, setCondition] = useState<ICondition>({
@@ -26,6 +27,7 @@ export const AI = () => {
     horseWeight: undefined,
   });
   const toast = useRef<Toast>(null);
+  const [results, setResults] = useState<Map<number, IResult[]>>();
 
   const handleClick = async () => {
     if (!condition.raceName) {
@@ -42,6 +44,7 @@ export const AI = () => {
     const results = await createResult(res.data);
     if (results) {
       const yearResults = await searchOtherResults(results);
+      setResults(yearResults);
       const entriesArray = Array.from(yearResults.entries());
       const jsonString = JSON.stringify(entriesArray);
     }
@@ -58,6 +61,31 @@ export const AI = () => {
           </div>
         </div>
       </Card>
+      {results &&
+        Array.from(results).map(([year, value]) => {
+          const gResults = value.reduce(
+            (acc: { [key: string]: IResult[] }, obj: IResult) => {
+              let key = obj["raceName"];
+              if (!acc[key!]) acc[key!] = [];
+              acc[key!].push(obj);
+              return acc;
+            },
+            {}
+          );
+          return (
+            <Card className="mt-4 mx-4 px-2 pt-2">
+              <div className="text-lg font-bold">{year}</div>
+              {Object.entries(gResults).map(([raceName, result]) => (
+                <>
+                  <div className="mt-4 text-sm">{raceName}</div>
+                  <div className="overflow-auto">
+                    <ResultTable data={result} />
+                  </div>
+                </>
+              ))}
+            </Card>
+          );
+        })}
     </>
   );
 };

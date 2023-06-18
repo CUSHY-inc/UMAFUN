@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { RaceTopic } from "./RaceTopic";
-import clsx from "clsx";
 import { Single } from "@/components/analysis/single/Single";
 import { AI } from "@/components/analysis/ai/AI";
 import { Tabs, TabType } from "./Tabs";

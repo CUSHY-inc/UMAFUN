@@ -82,7 +82,6 @@ export const createWhere = (condition: ICondition) => {
 export const createResult = async (data: mgt_race_result[]) => {
   const res = await axios.get("/api/db/raceIds");
   const raceIds = res.data;
-  console.log({ raceIds });
   const raceName = raceIds
     .filter((record: mgt_race_id) => {
       return record.race_id === 0;

@@ -1,5 +1,5 @@
 import { Condition } from "./Condition";
-import { ResultTable } from "../Table";
+import { ResultTable } from "./Table";
 import { WinRate } from "../WinRate";
 import { Card } from "@/components/common/Card";
 import { Toast } from "primereact/toast";
