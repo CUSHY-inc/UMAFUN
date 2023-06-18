@@ -19,6 +19,7 @@ export interface ICondition {
 
 export interface IResult {
   raceId: number;
+  raceName: string | undefined;
   year: number | null;
   arrive: number | null;
   frame: number | null;

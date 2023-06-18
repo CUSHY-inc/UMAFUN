@@ -1,6 +1,6 @@
 import { ICondition, MAX, MIN, IResult } from "@/interfaces/analysis";
 import { mgt_race_result } from "@/node_modules/.prisma/client/index";
-import { mgt_race_info } from "@prisma/client";
+import { mgt_race_id, mgt_race_info } from "@prisma/client";
 import axios from "axios";
 
 export const createWhere = (condition: ICondition) => {
@@ -57,10 +57,23 @@ export const createWhere = (condition: ICondition) => {
   return where;
 };
 
-export const createResult = (data: mgt_race_result[]) => {
+export const createResult = async (data: mgt_race_result[]) => {
+  const res = await axios.get("/api/db/raceIds");
+  const raceIds = res.data;
+  console.log({ raceIds });
+  const raceName = raceIds
+    .filter((record: mgt_race_id) => {
+      return record.race_id === 0;
+    })
+    .map((record: mgt_race_id) => record.race_name)[0];
   const result: IResult[] = data.map((val) => {
     return {
       raceId: val.race_id,
+      raceName: raceIds
+        .filter((record: mgt_race_id) => {
+          return record.race_id === val.race_id;
+        })
+        .map((record: mgt_race_id) => record.race_name)[0],
       year: val.year,
       arrive: val.arrive,
       frame: val.frame,
@@ -139,7 +152,7 @@ export const searchOtherResults = async (srcResult: IResult[]) => {
       ],
     };
     const res = await axios.post("/api/db/raceResults", where);
-    const results = createResult(res.data);
+    const results = await createResult(res.data);
     yearResults.set(year, results);
   }
   return yearResults;

@@ -41,7 +41,8 @@ export const AI = () => {
     }
     const where = createWhere(condition);
     const res = await axios.post("/api/db/raceResults", where);
-    const results = createResult(res.data);
+    const results = await createResult(res.data);
+    console.log({ results });
     if (results) {
       const yearResults = await searchOtherResults(results);
       const entriesArray = Array.from(yearResults.entries());

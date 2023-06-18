@@ -42,7 +42,7 @@ export const Single = () => {
     }
     const where = createWhere(condition);
     const res = await axios.post("/api/db/raceResults", where);
-    const results = createResult(res.data);
+    const results = await createResult(res.data);
     setResults(results);
     setTargetRaceId(condition.raceId);
   };
