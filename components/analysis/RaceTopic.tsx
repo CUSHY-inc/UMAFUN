@@ -40,7 +40,7 @@ export const RaceTopic = () => {
   }, []);
 
   return (
-    <div className="border border-gray pb-4 px-8">
+    <div className="border border-gray pt-2 pb-4 px-8">
       <div className="mt-2 text-xl font-bold">有馬記念</div>
       <div className="mt-1 text-normal">12/24(日) 中山11R 芝2500m</div>
       <div className="mt-4 flex justify-between gap-x-10">
