@@ -49,7 +49,7 @@ export const AI = () => {
 
   return (
     <>
-      <Card className="mt-4 mx-4 py-8 px-4">
+      <Card className="mt-4 mx-4 mb-8 py-8 px-4">
         <Condition condition={condition} setCondition={setCondition} />
         <div className="flex justify-center mt-8 w-full">
           <Toast ref={toast} />
