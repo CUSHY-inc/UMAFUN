@@ -123,7 +123,7 @@ export const Condition = ({
           />
         </div>
       </div>
-      <div className="divider mt-6 text-gray-700 text-sm" />
+      {/* <div className="divider mt-6 text-gray-700 text-sm" /> */}
       <div className={"mt-8 flex justify-around gap-x-4"}>
         <div>
           <div className={"w-36"}>

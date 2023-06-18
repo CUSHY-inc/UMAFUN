@@ -9,12 +9,7 @@ export const Card = ({
   className?: string;
 }) => {
   return (
-    <div
-      className={twMerge(
-        "rounded-lg shadow-even mx-4 py-8 px-4 bg-white",
-        className
-      )}
-    >
+    <div className={twMerge("rounded-lg shadow-even bg-white", className)}>
       {children}
     </div>
   );

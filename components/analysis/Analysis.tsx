@@ -8,6 +8,7 @@ import { ResultTable } from "@/components/analysis/Table";
 import { WinRate } from "./WinRate";
 import { Card } from "@/components/common/Card";
 import { Toast } from "primereact/toast";
+import { RaceTopic } from "./RaceTopic";
 
 export const Analysis = () => {
   const [condition, setCondition] = useState<ICondition>({
@@ -49,7 +50,19 @@ export const Analysis = () => {
 
   return (
     <>
-      <Card>
+      {/* <div className="border border-gray pb-4 px-8">
+        <div className="mt-2 text-xl font-bold">有馬記念</div>
+        <div className="mt-1 text-normal">12/24(日) 中山11R 芝2500m</div>
+        <div className="mt-4 flex justify-between gap-x-10">
+          <Card className="w-full flex flex-col justify-center items-center py-2">
+            <div className="font-bold">1番人気</div>
+            <div className="text-sm">複勝率75%</div>
+          </Card>
+          <Card className="w-full">aaa</Card>
+        </div>
+      </div> */}
+      <RaceTopic />
+      <Card className="mt-8 mx-4 py-8 px-4">
         <Condition condition={condition} setCondition={setCondition} />
         <div className="flex justify-center mt-8 w-full">
           <Toast ref={toast} />
@@ -61,7 +74,7 @@ export const Analysis = () => {
       <div className="mb-8">
         {results && (
           <>
-            <Card className="mt-8 py-4">
+            <Card className="mt-8 mx-4 py-4 px-2">
               <WinRate results={results!} targetRaceId={targetRaceId!} />
             </Card>
             <div className="mt-8 mx-4">
