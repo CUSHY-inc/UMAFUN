@@ -1,5 +1,7 @@
 import { ICondition, MAX, MIN, IResult } from "@/interfaces/analysis";
 import { mgt_race_result } from "@/node_modules/.prisma/client/index";
+import { mgt_race_info } from "@prisma/client";
+import axios from "axios";
 
 export const createWhere = (condition: ICondition) => {
   const where: any = {};
@@ -77,4 +79,55 @@ export const createResult = (data: mgt_race_result[]) => {
     };
   });
   return result;
+};
+
+export const searchOtherResults = async (results: IResult[]) => {
+  const res = await axios.get("/api/db/raceInfo");
+  const raceInfo = res.data;
+  // console.log({ raceInfo });
+  // for (const result of results) {
+  //   console.log({ result });
+  // }
+  // console.log({ results });
+  // const years = results
+  //   .map((result) => result.year)
+  //   .filter((year): year is number => year !== null);
+  // const minYear = Math.min(...years);
+  // const maxYear = Math.max(...years);
+  // console.log(years, minYear, maxYear);
+  // for (let year = minYear; year <= maxYear; year++){
+  // }
+  const targetRaceId = results[0].raceId;
+  const years = Array.from(
+    new Set(
+      results
+        .map((result) => result.year)
+        .filter((year): year is number => year !== null)
+    )
+  );
+  years.sort((a, b) => b - a);
+  console.log({ years });
+  for (const year of years) {
+    const targetRaceDate = raceInfo
+      .filter((record: mgt_race_info) => {
+        return (
+          record.race_id == targetRaceId &&
+          new Date(record.date).getFullYear() == year
+        );
+      })
+      .map((record: mgt_race_info) => record.date)[0];
+    const raceIds = raceInfo
+      .filter((record: mgt_race_info) => {
+        const recordYear = new Date(record.date).getFullYear();
+        return recordYear === year && record.date <= targetRaceDate;
+      })
+      .map((record: mgt_race_info) => record.race_id);
+    const names = results
+      .filter((result: IResult) => {
+        return result.year == year;
+      })
+      .map((result: IResult) => result.name);
+    console.log({ raceIds, names });
+  }
+  // console.log({ raceInfo, results });
 };

@@ -36,9 +36,6 @@ export const Select = ({
   );
 };
 
-export type MultiSelectType = {
-  value: string;
-}[];
 export const MultiSelect = ({
   options,
   label,
@@ -51,16 +48,16 @@ export const MultiSelect = ({
 }: {
   options: string[];
   label: string;
-  selected: MultiSelectType | undefined;
+  selected: string[] | undefined;
   onChange: (event: MultiSelectChangeEvent) => void;
   display?: "comma" | "chip" | undefined;
   className?: string;
   style?: Object;
   flex?: boolean;
 }) => {
-  const customOptions: MultiSelectType = options?.map((option) => ({
-    value: option,
-  }));
+  // const customOptions: string[] = options?.map((option) => ({
+  //   value: option,
+  // }));
 
   return (
     <div className="card flex justify-content-center">
@@ -68,8 +65,8 @@ export const MultiSelect = ({
         <PrimeReactMultiSelect
           value={selected}
           onChange={onChange}
-          options={customOptions}
-          optionLabel="value"
+          options={options}
+          optionLabel=""
           className={twMerge("w-full text-sm", className)}
           style={style}
           display={display}

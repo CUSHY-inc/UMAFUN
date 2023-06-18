@@ -1,15 +1,16 @@
 import { Condition } from "./Condition";
-import { ResultTable } from "./Table";
-import { WinRate } from "./WinRate";
+import { ResultTable } from "../Table";
+import { WinRate } from "../WinRate";
 import { Card } from "@/components/common/Card";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { ICondition, IResult } from "@/interfaces/analysis";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createWhere, createResult } from "@/utils/analysis";
 import axios from "axios";
+import { searchOtherResults } from "@/utils/analysis";
 
-export const Single = () => {
+export const AI = () => {
   const [condition, setCondition] = useState<ICondition>({
     raceName: undefined,
     raceId: undefined,
@@ -46,6 +47,15 @@ export const Single = () => {
     setResults(results);
     setTargetRaceId(condition.raceId);
   };
+
+  useEffect(() => {
+    const exeAI = async () => {
+      if (results) {
+        searchOtherResults(results);
+      }
+    };
+    exeAI();
+  }, [results]);
 
   return (
     <>

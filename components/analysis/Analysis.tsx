@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Condition } from "./Condition";
+import { Condition } from "./single/Condition";
 import { ICondition, IResult } from "@/interfaces/analysis";
 import { Button } from "primereact/button";
 import axios from "axios";
@@ -10,7 +10,8 @@ import { Card } from "@/components/common/Card";
 import { Toast } from "primereact/toast";
 import { RaceTopic } from "./RaceTopic";
 import clsx from "clsx";
-import { Single } from "@/components/analysis/Single";
+import { Single } from "@/components/analysis/single/Single";
+import { AI } from "@/components/analysis/ai/AI";
 
 export const Analysis = () => {
   const [selectedTab, setSelectedTab] = useState<"single" | "compare" | "ai">(
@@ -50,6 +51,7 @@ export const Analysis = () => {
         </a>
       </div>
       {selectedTab == "single" && <Single />}
+      {selectedTab == "ai" && <AI />}
     </>
   );
 };
