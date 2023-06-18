@@ -1,5 +1,4 @@
-import { ICondition, IResult, MAX, MIN } from "@/interfaces/analysis";
-import axios from "axios";
+import { IResult } from "@/interfaces/analysis";
 import useSWR from "swr";
 import { fetcher } from "@/boilerplate/utils/api";
 import { mgt_race_info, mgt_race_result } from "@prisma/client";

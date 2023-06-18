@@ -1,10 +1,7 @@
 import useSWR from "swr";
 import { fetcher } from "@/boilerplate/utils/api";
-import { Select, MultiSelect } from "@/boilerplate/components/Select";
+import { Select } from "@/boilerplate/components/Select";
 import { mgt_race_id } from "@prisma/client";
-import clsx from "clsx";
-import { RangeSlider } from "@/boilerplate/components/Slider";
-import { InputNumber } from "primereact/inputnumber";
 import { ICondition } from "@/interfaces/analysis";
 import { useEffect, useState } from "react";
 

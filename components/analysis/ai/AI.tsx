@@ -1,11 +1,9 @@
 import { Condition } from "./Condition";
-import { ResultTable } from "../Table";
-import { WinRate } from "../WinRate";
 import { Card } from "@/components/common/Card";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
-import { ICondition, IResult } from "@/interfaces/analysis";
-import { useEffect, useRef, useState } from "react";
+import { ICondition } from "@/interfaces/analysis";
+import { useRef, useState } from "react";
 import { createWhere, createResult } from "@/utils/analysis";
 import axios from "axios";
 import { searchOtherResults } from "@/utils/analysis";
@@ -42,12 +40,10 @@ export const AI = () => {
     const where = createWhere(condition);
     const res = await axios.post("/api/db/raceResults", where);
     const results = await createResult(res.data);
-    console.log({ results });
     if (results) {
       const yearResults = await searchOtherResults(results);
       const entriesArray = Array.from(yearResults.entries());
       const jsonString = JSON.stringify(entriesArray);
-      console.log(jsonString);
     }
   };
 

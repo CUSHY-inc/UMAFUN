@@ -1,9 +1,6 @@
 import { Card } from "@/components/common/Card";
 import { useState, useEffect } from "react";
 import { Chart } from "primereact/chart";
-import plugin from "tailwindcss";
-import { plugins } from "chart.js";
-import { Legend } from "chart.js/dist";
 
 export const RaceTopic = () => {
   const [chartData, setChartData] = useState({});

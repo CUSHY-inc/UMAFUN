@@ -1,13 +1,4 @@
-import { useRef, useState } from "react";
-import { Condition } from "./single/Condition";
-import { ICondition, IResult } from "@/interfaces/analysis";
-import { Button } from "primereact/button";
-import axios from "axios";
-import { createWhere, createResult } from "@/utils/analysis";
-import { ResultTable } from "@/components/analysis/Table";
-import { WinRate } from "./WinRate";
-import { Card } from "@/components/common/Card";
-import { Toast } from "primereact/toast";
+import { useState } from "react";
 import { RaceTopic } from "./RaceTopic";
 import clsx from "clsx";
 import { Single } from "@/components/analysis/single/Single";
@@ -17,7 +8,6 @@ export const Analysis = () => {
   const [selectedTab, setSelectedTab] = useState<"single" | "compare" | "ai">(
     "single"
   );
-
   return (
     <>
       <RaceTopic />
