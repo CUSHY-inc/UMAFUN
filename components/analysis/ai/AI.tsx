@@ -8,7 +8,7 @@ import { createWhere, createResult } from "@/utils/analysis";
 import axios from "axios";
 import { searchOtherResults } from "@/utils/analysis";
 import { ResultTable } from "./Table";
-import { ResultChart } from "../Chart";
+import { ChartPanel, ResultChart } from "../Chart";
 
 export const AI = () => {
   const [condition, setCondition] = useState<ICondition>({
@@ -53,10 +53,6 @@ export const AI = () => {
 
   return (
     <>
-      {/* <ResultChart
-        labels={["1着", "2着"]}
-        datasets={{ label: "着順", data: [3, 4] }}
-      /> */}
       <Card className="mt-4 mx-4 mb-8 py-8 px-4">
         <Condition condition={condition} setCondition={setCondition} />
         <div className="flex justify-center mt-8 w-full">

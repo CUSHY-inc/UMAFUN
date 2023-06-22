@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, ReactNode } from "react";
 import { Chart } from "primereact/chart";
-import { data } from "autoprefixer";
+import { OverlayPanel } from "primereact/overlaypanel";
 
 export const ResultChart = ({
   labels,
@@ -67,10 +67,27 @@ export const ResultChart = ({
     setChartData(data);
     setChartOptions(options);
   }, []);
-
   return (
     <div className="card">
       <Chart type="bar" data={chartData} options={chartOptions} />
+    </div>
+  );
+};
+
+export const ChartPanel = ({
+  label,
+  children,
+}: {
+  label: string;
+  children: ReactNode;
+}) => {
+  const op = useRef(null);
+  return (
+    <div className="card flex justify-content-center">
+      <div className="bg-white" onClick={(e) => op.current.toggle(e)}>
+        {label}
+      </div>
+      <OverlayPanel ref={op}>{children}</OverlayPanel>
     </div>
   );
 };
