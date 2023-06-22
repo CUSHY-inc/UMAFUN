@@ -82,11 +82,6 @@ export const createWhere = (condition: ICondition) => {
 export const createResult = async (data: mgt_race_result[]) => {
   const res = await axios.get("/api/db/raceIds");
   const raceIds = res.data;
-  const raceName = raceIds
-    .filter((record: mgt_race_id) => {
-      return record.race_id === 0;
-    })
-    .map((record: mgt_race_id) => record.race_name)[0];
   const result: IResult[] = data.map((val) => {
     return {
       raceId: val.race_id,
@@ -120,6 +115,7 @@ export const searchOtherResults = async (srcResult: IResult[]) => {
   const raceInfo = res.data;
   const targetRaceId = srcResult[0].raceId;
   const yearResults = new Map<number, IResult[]>();
+  const raceResults = new Map<string, IResult[]>();
   const years = Array.from(
     new Set(
       srcResult
@@ -176,5 +172,14 @@ export const searchOtherResults = async (srcResult: IResult[]) => {
     const results = await createResult(res.data);
     yearResults.set(year, results);
   }
+  yearResults.forEach((results, year) => {
+    results.forEach((result) => {
+      if (raceResults.has(result.raceName!)) {
+        raceResults.get(result.raceName!)!.push(result);
+      } else {
+        raceResults.set(result.raceName!, [result]);
+      }
+    });
+  });
   return yearResults;
 };
