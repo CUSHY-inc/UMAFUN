@@ -110,12 +110,15 @@ export const createResult = async (data: mgt_race_result[]) => {
   return result;
 };
 
-export const searchOtherResults = async (srcResult: IResult[]) => {
+export const searchOtherResults = async (
+  srcResult: IResult[],
+  option: "year" | "raceName" = "year"
+) => {
   const res = await axios.get("/api/db/raceInfo");
   const raceInfo = res.data;
   const targetRaceId = srcResult[0].raceId;
   const yearResults = new Map<number, IResult[]>();
-  const raceResults = new Map<string, IResult[]>();
+  const raceNameResults = new Map<string, IResult[]>();
   const years = Array.from(
     new Set(
       srcResult
@@ -172,14 +175,17 @@ export const searchOtherResults = async (srcResult: IResult[]) => {
     const results = await createResult(res.data);
     yearResults.set(year, results);
   }
-  yearResults.forEach((results, year) => {
-    results.forEach((result) => {
-      if (raceResults.has(result.raceName!)) {
-        raceResults.get(result.raceName!)!.push(result);
-      } else {
-        raceResults.set(result.raceName!, [result]);
-      }
+  if (option == "raceName") {
+    yearResults.forEach((results, year) => {
+      results.forEach((result) => {
+        if (raceNameResults.has(result.raceName!)) {
+          raceNameResults.get(result.raceName!)!.push(result);
+        } else {
+          raceNameResults.set(result.raceName!, [result]);
+        }
+      });
     });
-  });
+    return raceNameResults;
+  }
   return yearResults;
 };

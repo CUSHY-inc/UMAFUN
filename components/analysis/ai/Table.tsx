@@ -8,15 +8,15 @@ import { TbodyEx, TheadEx } from "@/boilerplate/components/Table";
 import { IResult } from "@/interfaces/analysis";
 
 const columns: ColumnDef<IResult>[] = [
-  // {
-  //   accessorKey: "year",
-  //   header: "開催年",
-  //   enableSorting: false,
-  //   cell: ({ getValue }) => {
-  //     const value = getValue<string | null>();
-  //     return <td style={{ whiteSpace: "nowrap" }}>{value}</td>;
-  //   },
-  // },
+  {
+    accessorKey: "year",
+    header: "開催年",
+    enableSorting: false,
+    cell: ({ getValue }) => {
+      const value = getValue<string | null>();
+      return <td style={{ whiteSpace: "nowrap" }}>{value}</td>;
+    },
+  },
   {
     accessorKey: "arrive",
     header: "着順",

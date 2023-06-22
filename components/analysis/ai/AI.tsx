@@ -27,7 +27,7 @@ export const AI = () => {
     horseWeight: undefined,
   });
   const toast = useRef<Toast>(null);
-  const [results, setResults] = useState<Map<number, IResult[]>>();
+  const [results, setResults] = useState<Map<string, IResult[]>>();
 
   const handleClick = async () => {
     if (!condition.raceName) {
@@ -43,10 +43,10 @@ export const AI = () => {
     const res = await axios.post("/api/db/raceResults", where);
     const results = await createResult(res.data);
     if (results) {
-      const yearResults = await searchOtherResults(results);
-      setResults(yearResults);
-      const entriesArray = Array.from(yearResults.entries());
-      const jsonString = JSON.stringify(entriesArray);
+      const raceNameResults = await searchOtherResults(results, "raceName");
+      setResults(raceNameResults as Map<string, IResult[]>);
+      // const entriesArray = Array.from(raceNameResults.entries());
+      // const jsonString = JSON.stringify(entriesArray);
     }
   };
 
@@ -62,27 +62,13 @@ export const AI = () => {
         </div>
       </Card>
       {results &&
-        Array.from(results).map(([year, value]) => {
-          const gResults = value.reduce(
-            (acc: { [key: string]: IResult[] }, obj: IResult) => {
-              let key = obj["raceName"];
-              if (!acc[key!]) acc[key!] = [];
-              acc[key!].push(obj);
-              return acc;
-            },
-            {}
-          );
+        Array.from(results).map(([raceName, result]) => {
           return (
-            <Card className="mt-4 mx-4 px-2 pt-2" key={year}>
-              <div className="text-lg font-bold">{year}</div>
-              {Object.entries(gResults).map(([raceName, result]) => (
-                <>
-                  <div className="mt-4 text-sm">{raceName}</div>
-                  <div className="overflow-auto">
-                    <ResultTable data={result} />
-                  </div>
-                </>
-              ))}
+            <Card className="mt-4 mx-4 px-2 pt-2" key={raceName}>
+              <div className="text-lg font-bold">{raceName}</div>
+              <div className="overflow-auto">
+                <ResultTable data={result} />
+              </div>
             </Card>
           );
         })}
