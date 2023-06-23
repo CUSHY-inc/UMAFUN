@@ -48,7 +48,7 @@ export const createWhere = (condition: ICondition) => {
   condition.genderOld &&
     where.OR.push({ gender_old: { in: condition.genderOld } });
   condition.lastRank &&
-    where.OR.push({ last_rank: { in: condition.lastRank } });
+    where.OR.push({ last_rank: { in: condition.lastRank.map(Number) } });
   if (condition.weight) {
     where.OR.push({
       weight: {
