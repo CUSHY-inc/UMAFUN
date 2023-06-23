@@ -81,7 +81,7 @@ export const ChartPanel = ({
   label: string;
   children: ReactNode;
 }) => {
-  const op = useRef(null);
+  const op = useRef<any>(null);
   return (
     <div className="card flex justify-content-center">
       <div className="bg-white" onClick={(e) => op.current.toggle(e)}>
