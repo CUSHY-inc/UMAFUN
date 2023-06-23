@@ -27,7 +27,6 @@ export const Single = () => {
     horseWeight: undefined,
   });
   const [results, setResults] = useState<IResult[]>();
-  const [targetRaceId, setTargetRaceId] = useState<number>();
   const toast = useRef<Toast>(null);
 
   const handleClick = async () => {
@@ -44,7 +43,6 @@ export const Single = () => {
     const res = await axios.post("/api/db/raceResults", where);
     const results = await createResult(res.data);
     setResults(results);
-    setTargetRaceId(condition.raceId);
   };
 
   return (
