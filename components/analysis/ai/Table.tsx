@@ -6,7 +6,7 @@ import {
 import { Table } from "react-daisyui";
 import { TbodyEx, TheadEx } from "@/boilerplate/components/Table";
 import { IResult } from "@/interfaces/analysis";
-import { ChartPanel, ResultChart } from "../Chart";
+import { ChartPanel, VerticalChart } from "../Chart";
 
 const createColumns = (data: IResult[]): ColumnDef<IResult>[] => [
   {
@@ -30,7 +30,7 @@ const createColumns = (data: IResult[]): ColumnDef<IResult>[] => [
       );
       return (
         <ChartPanel label="着順">
-          <ResultChart
+          <VerticalChart
             labels={labels}
             datasets={{ label: "着順", data: count }}
           />
@@ -55,7 +55,7 @@ const createColumns = (data: IResult[]): ColumnDef<IResult>[] => [
       );
       return (
         <ChartPanel label="枠">
-          <ResultChart
+          <VerticalChart
             labels={labels}
             datasets={{ label: "枠", data: count }}
           />
@@ -101,7 +101,7 @@ const createColumns = (data: IResult[]): ColumnDef<IResult>[] => [
       );
       return (
         <ChartPanel label="性齢">
-          <ResultChart
+          <VerticalChart
             labels={labels}
             datasets={{ label: "性齢", data: count }}
           />
@@ -162,7 +162,7 @@ const createColumns = (data: IResult[]): ColumnDef<IResult>[] => [
       );
       return (
         <ChartPanel label="人気">
-          <ResultChart
+          <VerticalChart
             labels={labels}
             datasets={{ label: "人気", data: count }}
           />
@@ -203,7 +203,7 @@ const createColumns = (data: IResult[]): ColumnDef<IResult>[] => [
       const count = labels.map((key) => oddsMap.get(key) || 0);
       return (
         <ChartPanel label="単勝オッズ">
-          <ResultChart
+          <VerticalChart
             labels={labels}
             datasets={{ label: "単勝オッズ", data: count }}
           />
@@ -237,7 +237,7 @@ const createColumns = (data: IResult[]): ColumnDef<IResult>[] => [
       );
       return (
         <ChartPanel label="上り順">
-          <ResultChart
+          <VerticalChart
             labels={labels}
             datasets={{ label: "上り順", data: count }}
           />
@@ -276,7 +276,7 @@ const createColumns = (data: IResult[]): ColumnDef<IResult>[] => [
       const count = labels.map((key) => passingGroupMap.get(key) || 0);
       return (
         <ChartPanel label="通過">
-          <ResultChart
+          <VerticalChart
             labels={labels}
             datasets={{ label: "通過", data: count }}
           />

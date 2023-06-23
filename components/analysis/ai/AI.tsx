@@ -8,7 +8,7 @@ import { createWhere, createResult } from "@/utils/analysis";
 import axios from "axios";
 import { searchOtherResults } from "@/utils/analysis";
 import { ResultTable } from "./Table";
-import { ChartPanel, ResultChart } from "../Chart";
+import { ChartPanel, VerticalChart } from "../Chart";
 
 export const AI = () => {
   const [condition, setCondition] = useState<ICondition>({
