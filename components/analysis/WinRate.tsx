@@ -84,10 +84,13 @@ export const WinRate = ({
             switch (record[0].arrive) {
               case 1: {
                 winRate.first++;
+                winRate.second++;
+                winRate.third++;
                 break;
               }
               case 2: {
                 winRate.second++;
+                winRate.third++;
                 break;
               }
               case 3: {

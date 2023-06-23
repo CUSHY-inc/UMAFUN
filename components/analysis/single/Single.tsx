@@ -62,12 +62,14 @@ export const Single = () => {
             <Card className="mt-8 mx-4 py-4 px-2">
               <WinRate results={results!} targetRaceId={results[0].raceId} />
             </Card>
-            <div className="mt-8 mx-4">
-              <div className="mb-2 ml-2 text-sm">[{condition.raceName}]</div>
+            <Card className="mt-4 mx-4 px-2 pt-2">
+              <div className="text-lg font-bold my-1 ml-1">
+                {results[0].raceName}
+              </div>
               <div className="overflow-auto">
                 <ResultTable data={results} />
               </div>
-            </div>
+            </Card>
           </>
         )}
       </div>
