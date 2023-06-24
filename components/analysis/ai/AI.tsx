@@ -8,7 +8,6 @@ import { createWhere, createResult } from "@/utils/analysis";
 import axios from "axios";
 import { searchOtherResults } from "@/utils/analysis";
 import { ResultTable } from "./Table";
-import { ChartPanel, VerticalChart } from "../Chart";
 
 export const AI = () => {
   const [condition, setCondition] = useState<ICondition>({
@@ -28,7 +27,8 @@ export const AI = () => {
     horseWeight: undefined,
   });
   const toast = useRef<Toast>(null);
-  const [results, setResults] = useState<Map<string, IResult[]>>();
+  const [targetResults, setTargetResults] = useState<Map<string, IResult[]>>();
+  const [otherResults, setOtherResults] = useState<Map<string, IResult[]>>();
 
   const handleClick = async () => {
     if (!condition.raceName) {
@@ -44,10 +44,15 @@ export const AI = () => {
     const res = await axios.post("/api/db/raceResults", where);
     const results = await createResult(res.data);
     if (results) {
-      const raceNameResults = await searchOtherResults(results, "raceName");
-      setResults(raceNameResults as Map<string, IResult[]>);
-      // const entriesArray = Array.from(raceNameResults.entries());
-      // const jsonString = JSON.stringify(entriesArray);
+      const raceNameResults: Map<string, IResult[]> = await searchOtherResults(
+        results
+      );
+      const target = raceNameResults.get(condition.raceName);
+      const targetMap = new Map<string, IResult[]>();
+      targetMap.set(condition.raceName, target!);
+      setTargetResults(targetMap);
+      raceNameResults.delete(condition.raceName);
+      setOtherResults(raceNameResults);
     }
   };
 
@@ -62,8 +67,20 @@ export const AI = () => {
           </div>
         </div>
       </Card>
-      {results &&
-        Array.from(results).map(([raceName, result]) => {
+      {targetResults &&
+        Array.from(targetResults).map(([raceName, result]) => {
+          return (
+            <Card className="mt-4 mx-4 px-2 pt-2" key={raceName}>
+              <div className="text-lg font-bold">{raceName}</div>
+              <div className="overflow-auto">
+                <ResultTable data={result} />
+              </div>
+            </Card>
+          );
+        })}
+      {otherResults && <div className="divider mx-4 my-8">以下関連レース</div>}
+      {otherResults &&
+        Array.from(otherResults).map(([raceName, result]) => {
           return (
             <Card className="mt-4 mx-4 px-2 pt-2" key={raceName}>
               <div className="text-lg font-bold">{raceName}</div>
