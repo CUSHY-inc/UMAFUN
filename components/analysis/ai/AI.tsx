@@ -8,6 +8,8 @@ import { createWhere, createResult } from "@/utils/analysis";
 import axios from "axios";
 import { searchOtherResults } from "@/utils/analysis";
 import { ResultTable } from "./Table";
+import { raceIdState, raceInfoState } from "@/states/race";
+import { useRecoilValue } from "recoil";
 
 export const AI = () => {
   const [condition, setCondition] = useState<ICondition>({
@@ -29,6 +31,8 @@ export const AI = () => {
   const toast = useRef<Toast>(null);
   const [targetResults, setTargetResults] = useState<Map<string, IResult[]>>();
   const [otherResults, setOtherResults] = useState<Map<string, IResult[]>>();
+  const raceIds = useRecoilValue(raceIdState);
+  const raceInfo = useRecoilValue(raceInfoState);
 
   const handleClick = async () => {
     if (!condition.raceName) {
@@ -42,10 +46,12 @@ export const AI = () => {
     }
     const where = createWhere(condition);
     const res = await axios.post("/api/db/raceResults", where);
-    const results = await createResult(res.data);
+    const results = createResult(res.data, raceIds!);
     if (results) {
       const raceNameResults: Map<string, IResult[]> = await searchOtherResults(
-        results
+        results,
+        raceIds!,
+        raceInfo!
       );
       const target = raceNameResults.get(condition.raceName);
       const targetMap = new Map<string, IResult[]>();

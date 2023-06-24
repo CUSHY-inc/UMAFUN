@@ -3,6 +3,8 @@ import useSWR from "swr";
 import { fetcher } from "@/boilerplate/utils/api";
 import { mgt_race_info, mgt_race_result } from "@prisma/client";
 import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { raceInfoState } from "@/states/race";
 
 const fetchRecord = (
   name: string,
@@ -31,10 +33,7 @@ export const WinRate = ({
   targetRaceId: number;
 }) => {
   const [winRate, setWinRate] = useState<WinRecordType | undefined>();
-  const { data: raceInfo, error: raceInfoError } = useSWR(
-    { url: "/api/db/raceInfo", method: "GET" },
-    fetcher
-  );
+  const raceInfo = useRecoilValue(raceInfoState);
   const { data: targetRace, error: targetRaceError } = useSWR(
     {
       url: "/api/db/raceResults",

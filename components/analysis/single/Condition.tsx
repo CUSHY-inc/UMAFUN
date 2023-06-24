@@ -1,5 +1,3 @@
-import useSWR from "swr";
-import { fetcher } from "@/boilerplate/utils/api";
 import { Select, MultiSelect } from "@/boilerplate/components/Select";
 import { mgt_race_id } from "@prisma/client";
 import clsx from "clsx";
@@ -29,6 +27,8 @@ import {
   MIN,
   MAX,
 } from "@/utils/analysis";
+import { useRecoilValue } from "recoil";
+import { raceIdState } from "@/states/race";
 
 export const Condition = ({
   condition,
@@ -37,11 +37,8 @@ export const Condition = ({
   condition: ICondition;
   setCondition: React.Dispatch<React.SetStateAction<ICondition>>;
 }) => {
-  const { data, error } = useSWR(
-    { url: "/api/db/raceIds", method: "GET" },
-    fetcher
-  );
-  const raceName = data?.map((item: mgt_race_id) => item.race_name);
+  const raceIds = useRecoilValue(raceIdState);
+  const raceName = raceIds?.map((item: mgt_race_id) => item.race_name);
   const year = Array.from({ length: yearMax - yearMin + 1 }, (_, index) =>
     (yearMax - index).toString()
   );
@@ -66,21 +63,20 @@ export const Condition = ({
     <>
       <div>
         <Select
-          options={raceName}
+          options={raceName as string[]}
           label="レース名を選択"
           selected={condition.raceName}
           onChange={(e) => {
             const raceName = e.value;
-            const race = data.find(
+            const race = raceIds?.find(
               (r: mgt_race_id) => r.race_name === raceName
             );
             setCondition((prevState) => ({
               ...prevState,
               raceName: raceName,
-              raceId: race.race_id,
+              raceId: race?.race_id,
             }));
           }}
-          // filter={true}
         />
       </div>
       <div className="mt-6 flex items-center gap-x-8">

@@ -79,9 +79,10 @@ export const createWhere = (condition: ICondition) => {
   return where;
 };
 
-export const createResult = async (data: mgt_race_result[]) => {
-  const res = await axios.get("/api/db/raceIds");
-  const raceIds = res.data;
+export const createResult = (
+  data: mgt_race_result[],
+  raceIds: mgt_race_id[]
+) => {
   const result: IResult[] = data.map((val) => {
     return {
       raceId: val.race_id,
@@ -111,9 +112,11 @@ export const createResult = async (data: mgt_race_result[]) => {
   return result;
 };
 
-export const searchOtherResults = async (srcResult: IResult[]) => {
-  const res = await axios.get("/api/db/raceInfo");
-  const raceInfo = res.data;
+export const searchOtherResults = async (
+  srcResult: IResult[],
+  raceIds: mgt_race_id[],
+  raceInfo: mgt_race_info[]
+) => {
   const targetRaceId = srcResult[0].raceId;
   const yearResults = new Map<number, IResult[]>();
   const raceNameResults = new Map<string, IResult[]>();
@@ -134,7 +137,7 @@ export const searchOtherResults = async (srcResult: IResult[]) => {
         );
       })
       .map((record: mgt_race_info) => record.date)[0];
-    const raceIds = raceInfo
+    const raceId = raceInfo
       .filter((record: mgt_race_info) => {
         const recordYear = new Date(record.date).getFullYear();
         return recordYear === year && record.date <= targetRaceDate;
@@ -149,7 +152,7 @@ export const searchOtherResults = async (srcResult: IResult[]) => {
       OR: [
         {
           race_id: {
-            in: raceIds,
+            in: raceId,
           },
           name: {
             in: names,
@@ -159,7 +162,7 @@ export const searchOtherResults = async (srcResult: IResult[]) => {
         {
           race_id: {
             not: {
-              in: raceIds,
+              in: raceId,
             },
           },
           name: {
@@ -170,7 +173,7 @@ export const searchOtherResults = async (srcResult: IResult[]) => {
       ],
     };
     const res = await axios.post("/api/db/raceResults", where);
-    const results = await createResult(res.data);
+    const results = createResult(res.data, raceIds);
     yearResults.set(year, results);
   }
   yearResults.forEach((results, year) => {
@@ -183,16 +186,4 @@ export const searchOtherResults = async (srcResult: IResult[]) => {
     });
   });
   return raceNameResults;
-  // if (option == "raceName") {
-  //   yearResults.forEach((results, year) => {
-  //     results.forEach((result) => {
-  //       if (raceNameResults.has(result.raceName!)) {
-  //         raceNameResults.get(result.raceName!)!.push(result);
-  //       } else {
-  //         raceNameResults.set(result.raceName!, [result]);
-  //       }
-  //     });
-  //   });
-  //   return raceNameResults;
-  // }
 };

@@ -8,6 +8,8 @@ import { ICondition, IResult } from "@/interfaces/analysis";
 import { useRef, useState } from "react";
 import { createWhere, createResult } from "@/utils/analysis";
 import axios from "axios";
+import { raceIdState } from "@/states/race";
+import { useRecoilValue } from "recoil";
 
 export const Single = () => {
   const [condition, setCondition] = useState<ICondition>({
@@ -28,6 +30,7 @@ export const Single = () => {
   });
   const [results, setResults] = useState<IResult[]>();
   const toast = useRef<Toast>(null);
+  const raceIds = useRecoilValue(raceIdState);
 
   const handleClick = async () => {
     if (!condition.raceName) {
@@ -41,7 +44,7 @@ export const Single = () => {
     }
     const where = createWhere(condition);
     const res = await axios.post("/api/db/raceResults", where);
-    const results = await createResult(res.data);
+    const results = createResult(res.data, raceIds!);
     setResults(results);
   };
 
