@@ -96,7 +96,7 @@ export const createResult = async (data: mgt_race_result[]) => {
       number: val.number,
       name: val.name,
       genderOld: val.gender_old,
-      weight: val.horse_weight,
+      weight: val.weight,
       jockey: val.jockey,
       time: val.time,
       margin: val.margin,
@@ -105,6 +105,7 @@ export const createResult = async (data: mgt_race_result[]) => {
       last: val.last,
       lastRank: val.last_rank,
       passing: val.passing,
+      horseWeight: val.horse_weight,
     };
   });
   return result;

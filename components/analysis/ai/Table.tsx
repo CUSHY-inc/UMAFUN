@@ -29,12 +29,14 @@ const createColumns = (data: IResult[]): ColumnDef<IResult>[] => [
           data.filter((x) => `${x.arrive}着` === value).length
       );
       return (
-        <ChartPanel label="着順">
-          <VerticalChart
-            labels={labels}
-            datasets={{ label: "着順", data: count }}
-          />
-        </ChartPanel>
+        <div className="underline">
+          <ChartPanel label="着順">
+            <VerticalChart
+              labels={labels}
+              datasets={{ label: "着順", data: count }}
+            />
+          </ChartPanel>
+        </div>
       );
     },
     enableSorting: false,
@@ -54,12 +56,14 @@ const createColumns = (data: IResult[]): ColumnDef<IResult>[] => [
           data.filter((x) => `${x.frame}枠` === value).length
       );
       return (
-        <ChartPanel label="枠">
-          <VerticalChart
-            labels={labels}
-            datasets={{ label: "枠", data: count }}
-          />
-        </ChartPanel>
+        <div className="underline">
+          <ChartPanel label="枠">
+            <VerticalChart
+              labels={labels}
+              datasets={{ label: "枠", data: count }}
+            />
+          </ChartPanel>
+        </div>
       );
     },
     enableSorting: false,
@@ -70,7 +74,25 @@ const createColumns = (data: IResult[]): ColumnDef<IResult>[] => [
   },
   {
     accessorKey: "number",
-    header: "馬番",
+    header: () => {
+      const labels = Array.from(
+        new Set(data.map((result) => `${result.number}`))
+      ).sort((a, b) => parseInt(a) - parseInt(b));
+      const count = labels.map(
+        (value, index, self) =>
+          data.filter((x) => `${x.number}` === value).length
+      );
+      return (
+        <div className="underline">
+          <ChartPanel label="馬番">
+            <VerticalChart
+              labels={labels}
+              datasets={{ label: "馬番", data: count }}
+            />
+          </ChartPanel>
+        </div>
+      );
+    },
     enableSorting: false,
     cell: ({ getValue }) => {
       const value = getValue<number | null>();
@@ -100,12 +122,14 @@ const createColumns = (data: IResult[]): ColumnDef<IResult>[] => [
         (value) => data.filter((x) => x.genderOld === value).length
       );
       return (
-        <ChartPanel label="性齢">
-          <VerticalChart
-            labels={labels}
-            datasets={{ label: "性齢", data: count }}
-          />
-        </ChartPanel>
+        <div className="underline">
+          <ChartPanel label="性齢">
+            <VerticalChart
+              labels={labels}
+              datasets={{ label: "性齢", data: count }}
+            />
+          </ChartPanel>
+        </div>
       );
     },
     enableSorting: false,
@@ -116,7 +140,25 @@ const createColumns = (data: IResult[]): ColumnDef<IResult>[] => [
   },
   {
     accessorKey: "weight",
-    header: "斤量",
+    header: () => {
+      const labels = Array.from(
+        new Set(data.map((result) => `${result.weight}`))
+      ).sort((a, b) => parseInt(a) - parseInt(b));
+      const count = labels.map(
+        (value, index, self) =>
+          data.filter((x) => `${x.weight}` === value).length
+      );
+      return (
+        <div className="underline">
+          <ChartPanel label="斤量">
+            <VerticalChart
+              labels={labels}
+              datasets={{ label: "斤量(kg)", data: count }}
+            />
+          </ChartPanel>
+        </div>
+      );
+    },
     enableSorting: false,
     cell: ({ getValue }) => {
       const value = getValue<number | null>();
@@ -161,12 +203,14 @@ const createColumns = (data: IResult[]): ColumnDef<IResult>[] => [
           data.filter((x) => `${x.popular}` === value).length
       );
       return (
-        <ChartPanel label="人気">
-          <VerticalChart
-            labels={labels}
-            datasets={{ label: "人気", data: count }}
-          />
-        </ChartPanel>
+        <div className="underline">
+          <ChartPanel label="人気">
+            <VerticalChart
+              labels={labels}
+              datasets={{ label: "人気", data: count }}
+            />
+          </ChartPanel>
+        </div>
       );
     },
     enableSorting: false,
@@ -202,12 +246,14 @@ const createColumns = (data: IResult[]): ColumnDef<IResult>[] => [
         });
       const count = labels.map((key) => oddsMap.get(key) || 0);
       return (
-        <ChartPanel label="単勝オッズ">
-          <VerticalChart
-            labels={labels}
-            datasets={{ label: "単勝オッズ", data: count }}
-          />
-        </ChartPanel>
+        <div className="underline">
+          <ChartPanel label="単勝オッズ">
+            <VerticalChart
+              labels={labels}
+              datasets={{ label: "単勝オッズ(倍)", data: count }}
+            />
+          </ChartPanel>
+        </div>
       );
     },
     enableSorting: false,
@@ -236,12 +282,14 @@ const createColumns = (data: IResult[]): ColumnDef<IResult>[] => [
           data.filter((x) => `${x.lastRank}位` === value).length
       );
       return (
-        <ChartPanel label="上り順">
-          <VerticalChart
-            labels={labels}
-            datasets={{ label: "上り順", data: count }}
-          />
-        </ChartPanel>
+        <div className="underline">
+          <ChartPanel label="上り順">
+            <VerticalChart
+              labels={labels}
+              datasets={{ label: "上り順", data: count }}
+            />
+          </ChartPanel>
+        </div>
       );
     },
     enableSorting: false,
@@ -253,36 +301,41 @@ const createColumns = (data: IResult[]): ColumnDef<IResult>[] => [
   {
     accessorKey: "passing",
     header: () => {
-      const passingGroupMap = new Map<string, number>();
-      for (const result of data) {
-        const passing = result.passing;
-        if (passing === null) continue;
-        const lastCornerPosition = parseInt(passing.split("-").slice(-1)[0]);
-        let group;
-        if (lastCornerPosition >= 1 && lastCornerPosition <= 3) {
-          group = "1~3";
-        } else if (lastCornerPosition >= 4 && lastCornerPosition <= 6) {
-          group = "4~6";
-        } else if (lastCornerPosition >= 7 && lastCornerPosition <= 9) {
-          group = "7~9";
-        } else {
-          group = "10~";
-        }
-        passingGroupMap.set(group, (passingGroupMap.get(group) || 0) + 1);
-      }
-      const labels = Array.from(passingGroupMap.keys()).sort(
-        (a, b) => Number(a.split("~")[0]) - Number(b.split("~")[0])
+      const labels = Array.from(
+        new Set(
+          data.map((result) => {
+            const splitStr = result.passing!.split("-");
+            return splitStr[splitStr?.length - 1];
+          })
+        )
+      ).sort((a, b) => parseInt(a) - parseInt(b));
+      const count = labels.map(
+        (value, index, self) =>
+          data.filter((x) => {
+            const splitStr = x.passing!.split("-");
+            return splitStr[splitStr?.length - 1] === value;
+          }).length
       );
-      const count = labels.map((key) => passingGroupMap.get(key) || 0);
       return (
-        <ChartPanel label="通過">
-          <VerticalChart
-            labels={labels}
-            datasets={{ label: "通過", data: count }}
-          />
-        </ChartPanel>
+        <div className="underline">
+          <ChartPanel label="通過">
+            <VerticalChart
+              labels={labels}
+              datasets={{ label: "最終コーナー", data: count }}
+            />
+          </ChartPanel>
+        </div>
       );
     },
+    enableSorting: false,
+    cell: ({ getValue }) => {
+      const value = getValue<string | null>();
+      return <td style={{ whiteSpace: "nowrap" }}>{value}</td>;
+    },
+  },
+  {
+    accessorKey: "horseWeight",
+    header: "馬体重",
     enableSorting: false,
     cell: ({ getValue }) => {
       const value = getValue<string | null>();

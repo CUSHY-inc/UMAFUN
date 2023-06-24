@@ -78,7 +78,7 @@ export const AI = () => {
             </Card>
           );
         })}
-      {otherResults && <div className="divider mx-4 my-8">以下関連レース</div>}
+      {otherResults && <div className="divider mx-4 my-8">関連レース</div>}
       {otherResults &&
         Array.from(otherResults).map(([raceName, result]) => {
           return (

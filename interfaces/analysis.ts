@@ -24,7 +24,7 @@ export interface IResult {
   number: number | null;
   name: string | null;
   genderOld: string | null;
-  weight: string | null;
+  weight: number | null;
   jockey: string | null;
   time: number | null;
   margin: string | null;
@@ -33,4 +33,5 @@ export interface IResult {
   last: number | null;
   lastRank: number | null;
   passing: string | null;
+  horseWeight: string | null;
 }

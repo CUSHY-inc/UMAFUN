@@ -27,7 +27,7 @@ export const VerticalChart = ({
           backgroundColor: documentStyle.getPropertyValue("--blue-500"),
           borderColor: documentStyle.getPropertyValue("--blue-500"),
           data: datasets.data,
-          barPercentage: 1,
+          barPercentage: 0.8,
           categoryPercentage: 0.5,
         },
       ],
