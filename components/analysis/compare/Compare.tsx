@@ -6,9 +6,14 @@ import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { ICondition, IResult } from "@/interfaces/analysis";
 import { useRef, useState } from "react";
-import { createWhere, createResult, initialCondition } from "@/utils/analysis";
+import {
+  createWhere,
+  createResult,
+  initialCondition,
+  searchTargetResult,
+} from "@/utils/analysis";
 import axios from "axios";
-import { raceIdState } from "@/states/race";
+import { raceIdState, raceInfoState } from "@/states/race";
 import { useRecoilValue } from "recoil";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { Button as AddButton } from "react-daisyui";
@@ -23,9 +28,11 @@ export const Compare = () => {
       ...initialCondition,
     },
   ]);
-  const [results, setResults] = useState<IResult[]>();
-  const toast = useRef<Toast>(null);
+  const [targetResult, setTargetResult] = useState<Map<string, IResult[]>>();
+  const [otherResults, setOtherResults] = useState<Map<string, IResult[]>>();
   const raceIds = useRecoilValue(raceIdState);
+  const raceInfo = useRecoilValue(raceInfoState);
+  const toast = useRef<Toast>(null);
 
   const handleExe = async () => {
     if (!target.raceName) {
@@ -37,10 +44,37 @@ export const Compare = () => {
       });
       return;
     }
-    // const where = createWhere(condition);
-    // const res = await axios.post("/api/db/raceResults", where);
-    // const results = createResult(res.data, raceIds!);
-    // setResults(results);
+    const wheres: any = [];
+    conditions.map((condition, index) => {
+      wheres.push(createWhere(condition));
+    });
+    const where = {
+      OR: wheres.map((item: any) => ({
+        AND: [item],
+      })),
+    };
+    const res = await axios.post("/api/db/raceResults", where);
+    const results = createResult(res.data, raceIds!);
+    const targetResult = await searchTargetResult(
+      target.raceId!,
+      target.year!,
+      results,
+      raceIds!,
+      raceInfo!
+    );
+    const otherResults = new Map<string, IResult[]>();
+    for (const result of results) {
+      const raceName = result.raceName;
+      if (!raceName) {
+        continue;
+      }
+      if (!otherResults.has(raceName)) {
+        otherResults.set(raceName, []);
+      }
+      otherResults.get(raceName)?.push(result);
+    }
+    setTargetResult(targetResult);
+    setOtherResults(otherResults);
   };
   const addCondition = () => {
     const update = [...conditions];
@@ -49,8 +83,6 @@ export const Compare = () => {
     });
     setConditions(update);
   };
-
-  console.log({ target, conditions });
 
   return (
     <>
@@ -73,23 +105,30 @@ export const Compare = () => {
           </AddButton>
         </div>
       )}
-      {/* <div className="mb-8">
-        {results && (
-          <>
-            <Card className="mt-8 mx-4 py-4 px-2">
-              <WinRate results={results!} targetRaceId={results[0].raceId} />
-            </Card>
-            <Card className="mt-4 mx-4 px-2 pt-2">
-              <div className="text-lg font-bold my-1 ml-1">
-                {results[0].raceName}
-              </div>
+      {targetResult &&
+        Array.from(targetResult).map(([raceName, result]) => {
+          return (
+            <Card className="mt-4 mx-4 px-2 pt-2" key={raceName}>
+              <div className="text-lg font-bold">{raceName}</div>
               <div className="overflow-auto">
-                <ResultTable data={results} />
+                <ResultTable data={result} />
               </div>
             </Card>
-          </>
-        )}
-      </div> */}
+          );
+        })}
+      {otherResults && <div className="divider mx-4 my-8">関連レース</div>}
+      {otherResults &&
+        Array.from(otherResults).map(([raceName, result]) => {
+          return (
+            <Card className="mt-4 mx-4 px-2 pt-2" key={raceName}>
+              <div className="text-lg font-bold">{raceName}</div>
+              <div className="overflow-auto">
+                <ResultTable data={result} />
+              </div>
+            </Card>
+          );
+        })}
+      <div className="mt-8" />
     </>
   );
 };

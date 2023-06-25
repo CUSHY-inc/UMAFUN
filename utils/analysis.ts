@@ -2,6 +2,7 @@ import { ICondition, IResult } from "@/interfaces/analysis";
 import { mgt_race_result } from "@/node_modules/.prisma/client/index";
 import { mgt_race_id, mgt_race_info } from "@prisma/client";
 import axios from "axios";
+import { Result } from "postcss";
 
 export const yearMax = 2022;
 export const yearMin = 2011;
@@ -28,7 +29,7 @@ export const MAX = 1;
 export const initialCondition: ICondition = {
   raceName: undefined,
   raceId: undefined,
-  year: undefined,
+  year: [yearMin, yearMax],
   number: undefined,
   frame: undefined,
   popular: undefined,
@@ -127,6 +128,61 @@ export const createResult = (
     };
   });
   return result;
+};
+
+export const searchTargetResult = async (
+  targetRaceId: number,
+  years: [number, number],
+  srcResults: IResult[],
+  raceIds: mgt_race_id[],
+  raceInfo: mgt_race_info[]
+) => {
+  const yearResults = new Map<number, IResult[]>();
+  const raceNameResults = new Map<string, IResult[]>();
+  for (let year = years[MAX]; year >= years[MIN]; year--) {
+    const targetRaceDate = raceInfo
+      .filter((record: mgt_race_info) => {
+        return (
+          record.race_id == targetRaceId &&
+          new Date(record.date).getFullYear() == year
+        );
+      })
+      .map((record: mgt_race_info) => record.date)[0];
+    const raceId = raceInfo
+      .filter((record: mgt_race_info) => {
+        const recordYear = new Date(record.date).getFullYear();
+        return recordYear === year && record.date <= targetRaceDate;
+      })
+      .map((record: mgt_race_info) => record.race_id);
+    const names = srcResults
+      .filter((result: IResult) => {
+        return (
+          (result.year == year && raceId.includes(result.raceId)) ||
+          (result.year == year - 1 && !raceId.includes(result.raceId))
+        );
+      })
+      .map((result: IResult) => result.name);
+    const where = {
+      race_id: targetRaceId,
+      year: year,
+      name: {
+        in: names,
+      },
+    };
+    const res = await axios.post("/api/db/raceResults", where);
+    const results = createResult(res.data, raceIds);
+    yearResults.set(year, results);
+  }
+  yearResults.forEach((results, year) => {
+    results.forEach((result) => {
+      if (raceNameResults.has(result.raceName!)) {
+        raceNameResults.get(result.raceName!)!.push(result);
+      } else {
+        raceNameResults.set(result.raceName!, [result]);
+      }
+    });
+  });
+  return raceNameResults;
 };
 
 export const searchOtherResults = async (
