@@ -35,8 +35,6 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import { Button } from "react-daisyui";
 import { Badge } from "primereact/badge";
 
-const MAX_CONDITIONS = 10;
-
 export const Condition = ({
   target,
   setTarget,
@@ -70,13 +68,6 @@ export const Condition = ({
     );
   const lastRank = [...Array(lastRankMax)].map((_, i) => (i + 1).toString());
 
-  const addCondition = () => {
-    const update = [...conditions];
-    update.push({
-      ...initialCondition,
-    });
-    setConditions(update);
-  };
   const deleteCondition = (index: number) => {
     const update = [...conditions];
     update.splice(index, 1);
@@ -607,14 +598,14 @@ export const Condition = ({
                 </div>
               </div>
             </Card>
-            {index === conditions.length - 1 &&
+            {/* {index === conditions.length - 1 &&
               conditions.length < MAX_CONDITIONS && (
                 <div className="my-4 w-full flex justify-center">
                   <Button onClick={addCondition}>
                     <AiOutlinePlusCircle className="text-3xl text-gray-500" />
                   </Button>
                 </div>
-              )}
+              )} */}
           </>
         );
       })}
