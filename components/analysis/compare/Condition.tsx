@@ -32,17 +32,20 @@ import {
   MIN,
   MAX,
 } from "@/utils/analysis";
+import { ReactNode } from "react";
 
 export const Condition = ({
   target,
   setTarget,
   conditions,
   setConditions,
+  children,
 }: {
   target: ICondition;
   setTarget: React.Dispatch<React.SetStateAction<ICondition>>;
   conditions: ICondition[];
   setConditions: React.Dispatch<React.SetStateAction<ICondition[]>>;
+  children?: ReactNode;
 }) => {
   const recentRace = useRecoilValue(recentRaceState);
   const raceIds = useRecoilValue(raceIdState);
@@ -595,15 +598,8 @@ export const Condition = ({
                   </div>
                 </div>
               </div>
+              {children}
             </Card>
-            {/* {index === conditions.length - 1 &&
-              conditions.length < MAX_CONDITIONS && (
-                <div className="my-4 w-full flex justify-center">
-                  <Button onClick={addCondition}>
-                    <AiOutlinePlusCircle className="text-3xl text-gray-500" />
-                  </Button>
-                </div>
-              )} */}
           </>
         );
       })}
