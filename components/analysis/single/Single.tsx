@@ -4,20 +4,28 @@ import { WinRate } from "../WinRate";
 import { Card } from "@/components/common/Card";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createWhere, createResult } from "@/utils/analysis";
 import axios from "axios";
-import { raceIdState } from "@/states/race";
+import { raceIdState, recentRaceState } from "@/states/race";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { singleConditionState, singleResultState } from "@/states/analysis";
 import clsx from "clsx";
 
 export const Single = () => {
+  const recentRace = useRecoilValue(recentRaceState);
   const [condition, setCondition] = useRecoilState(singleConditionState);
   const [results, setResults] = useRecoilState(singleResultState);
   const [loading, setLoading] = useState(false);
   const toast = useRef<Toast>(null);
   const raceIds = useRecoilValue(raceIdState);
+  useEffect(() => {
+    setCondition((prevState) => ({
+      ...prevState,
+      raceId: recentRace.raceId,
+      raceName: recentRace.raceName,
+    }));
+  }, [recentRace]);
 
   const handleClick = async () => {
     if (!condition.raceName) {

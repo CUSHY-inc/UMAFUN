@@ -4,7 +4,11 @@ import clsx from "clsx";
 import { RangeSlider } from "@/boilerplate/components/Slider";
 import { InputNumber } from "primereact/inputnumber";
 import { ICondition } from "@/interfaces/analysis";
-import { initialCondition } from "@/utils/analysis";
+import { useRecoilValue } from "recoil";
+import { raceIdState, recentRaceState } from "@/states/race";
+import { Card } from "@/components/common/Card";
+import { Button } from "react-daisyui";
+import { Badge } from "primereact/badge";
 import {
   yearMax,
   yearMin,
@@ -28,12 +32,6 @@ import {
   MIN,
   MAX,
 } from "@/utils/analysis";
-import { useRecoilValue } from "recoil";
-import { raceIdState } from "@/states/race";
-import { Card } from "@/components/common/Card";
-import { AiOutlinePlusCircle } from "react-icons/ai";
-import { Button } from "react-daisyui";
-import { Badge } from "primereact/badge";
 
 export const Condition = ({
   target,
@@ -46,6 +44,7 @@ export const Condition = ({
   conditions: ICondition[];
   setConditions: React.Dispatch<React.SetStateAction<ICondition[]>>;
 }) => {
+  const recentRace = useRecoilValue(recentRaceState);
   const raceIds = useRecoilValue(raceIdState);
   const raceName = raceIds?.map((item: mgt_race_id) => item.race_name);
   const year = Array.from({ length: yearMax - yearMin + 1 }, (_, index) =>
@@ -80,8 +79,7 @@ export const Condition = ({
         <div>
           <Select
             options={raceName as string[]}
-            label="レース名を選択"
-            selected={target.raceName}
+            selected={target.raceName ? target.raceName : recentRace.raceName}
             onChange={(e) => {
               const raceName = e.value;
               const race = raceIds?.find(

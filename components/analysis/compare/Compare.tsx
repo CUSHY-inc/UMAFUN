@@ -5,7 +5,7 @@ import { Card } from "@/components/common/Card";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { IResult } from "@/interfaces/analysis";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   createWhere,
   createResult,
@@ -13,7 +13,7 @@ import {
   searchTargetResult,
 } from "@/utils/analysis";
 import axios from "axios";
-import { raceIdState, raceInfoState } from "@/states/race";
+import { raceIdState, raceInfoState, recentRaceState } from "@/states/race";
 import { useRecoilValue } from "recoil";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { Button as AddButton } from "react-daisyui";
@@ -28,6 +28,7 @@ import clsx from "clsx";
 
 const MAX_CONDITIONS = 10;
 export const Compare = () => {
+  const recentRace = useRecoilValue(recentRaceState);
   const [target, setTarget] = useRecoilState(compareTargetConditionState);
   const [conditions, setConditions] = useRecoilState(compareConditionState);
   const [targetResult, setTargetResult] = useRecoilState(
@@ -40,6 +41,13 @@ export const Compare = () => {
   const raceIds = useRecoilValue(raceIdState);
   const raceInfo = useRecoilValue(raceInfoState);
   const toast = useRef<Toast>(null);
+  useEffect(() => {
+    setTarget((prevState) => ({
+      ...prevState,
+      raceId: recentRace.raceId,
+      raceName: recentRace.raceName,
+    }));
+  }, [recentRace]);
 
   const handleExe = async () => {
     if (!target.raceName) {

@@ -4,7 +4,7 @@ import { ICondition } from "@/interfaces/analysis";
 import { useEffect, useState } from "react";
 import { yearMax, yearMin, arriveMax, MIN, MAX } from "@/utils/analysis";
 import { useRecoilValue } from "recoil";
-import { raceIdState } from "@/states/race";
+import { raceIdState, recentRaceState } from "@/states/race";
 
 export const Condition = ({
   condition,
@@ -13,6 +13,7 @@ export const Condition = ({
   condition: ICondition;
   setCondition: React.Dispatch<React.SetStateAction<ICondition>>;
 }) => {
+  const recentRace = useRecoilValue(recentRaceState);
   const raceIds = useRecoilValue(raceIdState);
   const raceName = raceIds?.map((item: mgt_race_id) => item.race_name);
   const year = Array.from({ length: yearMax - yearMin + 1 }, (_, index) =>
@@ -39,8 +40,9 @@ export const Condition = ({
       <div>
         <Select
           options={raceName as string[]}
-          label="レース名を選択"
-          selected={condition.raceName}
+          selected={
+            condition.raceName ? condition.raceName : recentRace.raceName
+          }
           onChange={(e) => {
             const raceName = e.value;
             const race = raceIds?.find(
