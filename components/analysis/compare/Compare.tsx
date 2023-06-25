@@ -11,15 +11,21 @@ import axios from "axios";
 import { raceIdState } from "@/states/race";
 import { useRecoilValue } from "recoil";
 
-export const Single = () => {
-  const [condition, setCondition] = useState<ICondition>({
+export const Compare = () => {
+  const [target, setTarget] = useState<ICondition>({
     ...initialCondition,
   });
+  const [conditions, setConditions] = useState<ICondition[]>([
+    {
+      ...initialCondition,
+    },
+  ]);
   const [results, setResults] = useState<IResult[]>();
   const toast = useRef<Toast>(null);
   const raceIds = useRecoilValue(raceIdState);
 
   const handleClick = async () => {
+    return;
     if (!condition.raceName) {
       toast.current!.show({
         severity: "warn",
@@ -35,18 +41,23 @@ export const Single = () => {
     setResults(results);
   };
 
+  console.log({ conditions });
+
   return (
     <>
-      <Card className="mt-4 mx-4 py-8 px-4">
-        <Condition condition={condition} setCondition={setCondition} />
-        <div className="flex justify-center mt-8 w-full">
+      <Condition
+        target={target}
+        setTarget={setTarget}
+        conditions={conditions}
+        setConditions={setConditions}
+      />
+      {/* <div className="flex justify-center mt-8 w-full">
           <Toast ref={toast} />
           <div className="card w-48">
             <Button label="実行" onClick={handleClick} />
           </div>
-        </div>
-      </Card>
-      <div className="mb-8">
+        </div> */}
+      {/* <div className="mb-8">
         {results && (
           <>
             <Card className="mt-8 mx-4 py-4 px-2">
@@ -62,7 +73,7 @@ export const Single = () => {
             </Card>
           </>
         )}
-      </div>
+      </div> */}
     </>
   );
 };

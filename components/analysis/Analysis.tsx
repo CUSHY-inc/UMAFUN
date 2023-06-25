@@ -7,6 +7,7 @@ import useSWR from "swr";
 import { fetcher } from "@/boilerplate/utils/api";
 import { useSetRecoilState } from "recoil";
 import { raceIdState, raceInfoState } from "@/states/race";
+import { Compare } from "./compare/Compare";
 
 export const Analysis = () => {
   const [selectedTab, setSelectedTab] = useState<TabType>("ai");
@@ -30,6 +31,7 @@ export const Analysis = () => {
       <RaceTopic />
       <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
       {selectedTab == "ai" && <AI />}
+      {selectedTab == "compare" && <Compare />}
       {selectedTab == "single" && <Single />}
     </>
   );

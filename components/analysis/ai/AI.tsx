@@ -4,7 +4,7 @@ import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { ICondition, IResult } from "@/interfaces/analysis";
 import { useRef, useState } from "react";
-import { createWhere, createResult } from "@/utils/analysis";
+import { createWhere, createResult, initialCondition } from "@/utils/analysis";
 import axios from "axios";
 import { searchOtherResults } from "@/utils/analysis";
 import { ResultTable } from "./Table";
@@ -13,20 +13,7 @@ import { useRecoilValue } from "recoil";
 
 export const AI = () => {
   const [condition, setCondition] = useState<ICondition>({
-    raceName: undefined,
-    raceId: undefined,
-    year: undefined,
-    number: undefined,
-    frame: undefined,
-    popular: undefined,
-    arrive: undefined,
-    genderOld: undefined,
-    lastRank: undefined,
-    weight: undefined,
-    time: undefined,
-    last: undefined,
-    odds: undefined,
-    horseWeight: undefined,
+    ...initialCondition,
   });
   const toast = useRef<Toast>(null);
   const [targetResults, setTargetResults] = useState<Map<string, IResult[]>>();

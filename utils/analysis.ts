@@ -25,6 +25,23 @@ export const horseWeightMin = 380;
 export const MIN = 0;
 export const MAX = 1;
 
+export const initialCondition: ICondition = {
+  raceName: undefined,
+  raceId: undefined,
+  year: undefined,
+  number: undefined,
+  frame: undefined,
+  popular: undefined,
+  arrive: undefined,
+  genderOld: undefined,
+  lastRank: undefined,
+  weight: undefined,
+  time: undefined,
+  last: undefined,
+  odds: undefined,
+  horseWeight: undefined,
+};
+
 export const createWhere = (condition: ICondition) => {
   const where: any = {};
   if (condition.raceId !== undefined) {
