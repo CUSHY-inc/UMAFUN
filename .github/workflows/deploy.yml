@@ -7,8 +7,8 @@ on:
      
 jobs:
   build:
-    steps:
-      - name: Deploy
-      run: |
-        echo "${{ secrets.PRIVATE_KEY }}" > private_key
-        chmod 600 private_keyuncask/kanpai.git"
+   steps:
+    - name: Deploy
+     run: |
+      echo "${{ secrets.PRIVATE_KEY }}" > private_key
+      chmod 600 private_keyuncask/kanpai.git"
