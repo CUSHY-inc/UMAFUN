@@ -94,6 +94,7 @@ export const Compare = () => {
         }
         otherResults.get(raceName)?.push(result);
       }
+      otherResults.delete(target.raceName);
       setTargetResult({ result: targetResult });
       setOtherResults({ result: otherResults });
       toast.current!.show({
