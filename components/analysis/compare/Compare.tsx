@@ -46,8 +46,20 @@ export const Compare = () => {
     }
     const wheres: any = [];
     conditions.map((condition, index) => {
+      if (!condition.raceId) {
+        return;
+      }
       wheres.push(createWhere(condition));
     });
+    if (wheres.length == 0) {
+      toast.current!.show({
+        severity: "warn",
+        summary: "Warning",
+        detail: "条件のレース名を選択してください。",
+        life: 3000,
+      });
+      return;
+    }
     const where = {
       OR: wheres.map((item: any) => ({
         AND: [item],
@@ -92,12 +104,6 @@ export const Compare = () => {
         conditions={conditions}
         setConditions={setConditions}
       />
-      <div className="flex justify-center my-4 w-full">
-        <Toast ref={toast} />
-        <div className="card w-48">
-          <Button label="実行" onClick={handleExe} />
-        </div>
-      </div>
       {conditions.length < MAX_CONDITIONS && (
         <div className="my-4 w-full flex justify-center">
           <AddButton onClick={addCondition} className="bg-white">
@@ -105,15 +111,26 @@ export const Compare = () => {
           </AddButton>
         </div>
       )}
+      <div className="flex justify-center my-4 w-full">
+        <Toast ref={toast} />
+        <div className="card w-48">
+          <Button label="実行" onClick={handleExe} />
+        </div>
+      </div>
       {targetResult &&
         Array.from(targetResult).map(([raceName, result]) => {
           return (
-            <Card className="mt-4 mx-4 px-2 pt-2" key={raceName}>
-              <div className="text-lg font-bold">{raceName}</div>
-              <div className="overflow-auto">
-                <ResultTable data={result} />
-              </div>
-            </Card>
+            <>
+              <Card className="mt-8 mx-4 py-4 px-2">
+                <WinRate results={result} />
+              </Card>
+              <Card className="mt-4 mx-4 px-2 pt-2" key={raceName}>
+                <div className="text-lg font-bold">{raceName}</div>
+                <div className="overflow-auto">
+                  <ResultTable data={result} />
+                </div>
+              </Card>
+            </>
           );
         })}
       {otherResults && <div className="divider mx-4 my-8">関連レース</div>}

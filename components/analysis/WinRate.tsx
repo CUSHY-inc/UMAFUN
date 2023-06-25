@@ -25,14 +25,9 @@ type WinRecordType = {
   third: number;
   outside: number;
 };
-export const WinRate = ({
-  results,
-  targetRaceId,
-}: {
-  results: IResult[];
-  targetRaceId: number;
-}) => {
+export const WinRate = ({ results }: { results: IResult[] }) => {
   const [winRate, setWinRate] = useState<WinRecordType | undefined>();
+  const targetRaceId = results[0].raceId;
   const raceInfo = useRecoilValue(raceInfoState);
   const { data: targetRace, error: targetRaceError } = useSWR(
     {
