@@ -5,7 +5,7 @@ import { Card } from "@/components/common/Card";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { IResult } from "@/interfaces/analysis";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
   createWhere,
   createResult,
@@ -24,6 +24,7 @@ import {
   compareTargetConditionState,
   compareTargetResultState,
 } from "@/states/analysis";
+import clsx from "clsx";
 
 const MAX_CONDITIONS = 10;
 export const Compare = () => {
@@ -35,6 +36,7 @@ export const Compare = () => {
   const [otherResults, setOtherResults] = useRecoilState(
     compareOtherResultState
   );
+  const [loading, setLoading] = useState(false);
   const raceIds = useRecoilValue(raceIdState);
   const raceInfo = useRecoilValue(raceInfoState);
   const toast = useRef<Toast>(null);
@@ -65,33 +67,51 @@ export const Compare = () => {
       });
       return;
     }
-    const where = {
-      OR: wheres.map((item: any) => ({
-        AND: [item],
-      })),
-    };
-    const res = await axios.post("/api/db/raceResults", where);
-    const results = createResult(res.data, raceIds!);
-    const targetResult = await searchTargetResult(
-      target.raceId!,
-      target.year!,
-      results,
-      raceIds!,
-      raceInfo!
-    );
-    const otherResults = new Map<string, IResult[]>();
-    for (const result of results) {
-      const raceName = result.raceName;
-      if (!raceName) {
-        continue;
+    setLoading(true);
+    try {
+      const where = {
+        OR: wheres.map((item: any) => ({
+          AND: [item],
+        })),
+      };
+      const res = await axios.post("/api/db/raceResults", where);
+      const results = createResult(res.data, raceIds!);
+      const targetResult = await searchTargetResult(
+        target.raceId!,
+        target.year!,
+        results,
+        raceIds!,
+        raceInfo!
+      );
+      const otherResults = new Map<string, IResult[]>();
+      for (const result of results) {
+        const raceName = result.raceName;
+        if (!raceName) {
+          continue;
+        }
+        if (!otherResults.has(raceName)) {
+          otherResults.set(raceName, []);
+        }
+        otherResults.get(raceName)?.push(result);
       }
-      if (!otherResults.has(raceName)) {
-        otherResults.set(raceName, []);
-      }
-      otherResults.get(raceName)?.push(result);
+      setTargetResult({ result: targetResult });
+      setOtherResults({ result: otherResults });
+      toast.current!.show({
+        severity: "success",
+        summary: "分析完了",
+        detail: "レース結果を表示します。",
+        life: 3000,
+      });
+    } catch (error) {
+      toast.current!.show({
+        severity: "error",
+        summary: "通信エラー",
+        detail: "通信エラーが発生しました",
+        life: 3000,
+      });
+    } finally {
+      setLoading(false);
     }
-    setTargetResult({ result: targetResult });
-    setOtherResults({ result: otherResults });
   };
   const addCondition = () => {
     const update = [...conditions];
@@ -119,7 +139,11 @@ export const Compare = () => {
       <div className="flex justify-center my-4 w-full">
         <Toast ref={toast} />
         <div className="card w-48">
-          <Button label="実行" onClick={handleExe} />
+          <Button
+            label="実行"
+            onClick={handleExe}
+            className={clsx(loading && "animate-bounce")}
+          />
         </div>
       </div>
       {targetResult.result &&

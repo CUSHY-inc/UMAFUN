@@ -3,13 +3,14 @@ import { Card } from "@/components/common/Card";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { IResult } from "@/interfaces/analysis";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { createWhere, createResult } from "@/utils/analysis";
 import axios from "axios";
 import { searchOtherResults } from "@/utils/analysis";
 import { ResultTable } from "../Table";
 import { raceIdState, raceInfoState } from "@/states/race";
 import { useRecoilState, useRecoilValue } from "recoil";
+import clsx from "clsx";
 import {
   aiConditionState,
   aiOtherResultState,
@@ -20,6 +21,7 @@ export const AI = () => {
   const [condition, setCondition] = useRecoilState(aiConditionState);
   const [targetResults, setTargetResults] = useRecoilState(aiTargetResultState);
   const [otherResults, setOtherResults] = useRecoilState(aiOtherResultState);
+  const [loading, setLoading] = useState(false);
   const raceIds = useRecoilValue(raceIdState);
   const raceInfo = useRecoilValue(raceInfoState);
   const toast = useRef<Toast>(null);
@@ -34,21 +36,36 @@ export const AI = () => {
       });
       return;
     }
-    const where = createWhere(condition);
-    const res = await axios.post("/api/db/raceResults", where);
-    const results = createResult(res.data, raceIds!);
-    if (results) {
-      const raceNameResults: Map<string, IResult[]> = await searchOtherResults(
-        results,
-        raceIds!,
-        raceInfo!
-      );
-      const target = raceNameResults.get(condition.raceName);
-      const targetMap = new Map<string, IResult[]>();
-      targetMap.set(condition.raceName, target!);
-      setTargetResults({ result: targetMap });
-      raceNameResults.delete(condition.raceName);
-      setOtherResults({ result: raceNameResults });
+    setLoading(true);
+    try {
+      const where = createWhere(condition);
+      const res = await axios.post("/api/db/raceResults", where);
+      const results = createResult(res.data, raceIds!);
+      if (results) {
+        const raceNameResults: Map<string, IResult[]> =
+          await searchOtherResults(results, raceIds!, raceInfo!);
+        const target = raceNameResults.get(condition.raceName);
+        const targetMap = new Map<string, IResult[]>();
+        targetMap.set(condition.raceName, target!);
+        setTargetResults({ result: targetMap });
+        raceNameResults.delete(condition.raceName);
+        setOtherResults({ result: raceNameResults });
+        toast.current!.show({
+          severity: "success",
+          summary: "分析完了",
+          detail: "レース結果を表示します。",
+          life: 3000,
+        });
+      }
+    } catch (error) {
+      toast.current!.show({
+        severity: "error",
+        summary: "通信エラー",
+        detail: "通信エラーが発生しました",
+        life: 3000,
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -59,7 +76,11 @@ export const AI = () => {
         <div className="flex justify-center mt-8 w-full">
           <Toast ref={toast} />
           <div className="card w-48">
-            <Button label="実行" onClick={handleClick} />
+            <Button
+              label="実行"
+              onClick={handleClick}
+              className={clsx(loading && "animate-bounce")}
+            />
           </div>
         </div>
       </Card>

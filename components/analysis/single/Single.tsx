@@ -4,17 +4,18 @@ import { WinRate } from "../WinRate";
 import { Card } from "@/components/common/Card";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
-import { ICondition, IResult } from "@/interfaces/analysis";
 import { useRef, useState } from "react";
-import { createWhere, createResult, initialCondition } from "@/utils/analysis";
+import { createWhere, createResult } from "@/utils/analysis";
 import axios from "axios";
 import { raceIdState } from "@/states/race";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { singleConditionState, singleResultState } from "@/states/analysis";
+import clsx from "clsx";
 
 export const Single = () => {
   const [condition, setCondition] = useRecoilState(singleConditionState);
   const [results, setResults] = useRecoilState(singleResultState);
+  const [loading, setLoading] = useState(false);
   const toast = useRef<Toast>(null);
   const raceIds = useRecoilValue(raceIdState);
 
@@ -28,10 +29,28 @@ export const Single = () => {
       });
       return;
     }
-    const where = createWhere(condition);
-    const res = await axios.post("/api/db/raceResults", where);
-    const results = createResult(res.data, raceIds!);
-    setResults(results);
+    setLoading(true);
+    try {
+      const where = createWhere(condition);
+      const res = await axios.post("/api/db/raceResults", where);
+      const results = createResult(res.data, raceIds!);
+      setResults(results);
+      toast.current!.show({
+        severity: "success",
+        summary: "分析完了",
+        detail: "レース結果を表示します。",
+        life: 3000,
+      });
+    } catch (error) {
+      toast.current!.show({
+        severity: "error",
+        summary: "通信エラー",
+        detail: "通信エラーが発生しました",
+        life: 3000,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -41,7 +60,11 @@ export const Single = () => {
         <div className="flex justify-center mt-8 w-full">
           <Toast ref={toast} />
           <div className="card w-48">
-            <Button label="実行" onClick={handleClick} />
+            <Button
+              label="実行"
+              onClick={handleClick}
+              className={clsx(loading && "animate-bounce")}
+            />
           </div>
         </div>
       </Card>

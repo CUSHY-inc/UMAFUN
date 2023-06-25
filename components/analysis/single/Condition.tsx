@@ -80,7 +80,7 @@ export const Condition = ({
         />
       </div>
       <div className="mt-6 flex items-center gap-x-8">
-        <div>
+        <div className="w-32">
           <Select
             options={year}
             selected={
@@ -100,7 +100,7 @@ export const Condition = ({
           />
         </div>
         <>~</>
-        <div>
+        <div className="w-32">
           <Select
             options={year}
             selected={
