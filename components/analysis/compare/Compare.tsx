@@ -1,11 +1,11 @@
 import { Condition } from "./Condition";
-import { ResultTable } from "./Table";
+import { ResultTable } from "../Table";
 import { WinRate } from "../WinRate";
 import { Card } from "@/components/common/Card";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
-import { ICondition, IResult } from "@/interfaces/analysis";
-import { useRef, useState } from "react";
+import { IResult } from "@/interfaces/analysis";
+import { useRef } from "react";
 import {
   createWhere,
   createResult,
@@ -17,19 +17,24 @@ import { raceIdState, raceInfoState } from "@/states/race";
 import { useRecoilValue } from "recoil";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { Button as AddButton } from "react-daisyui";
+import { useRecoilState } from "recoil";
+import {
+  compareConditionState,
+  compareOtherResultState,
+  compareTargetConditionState,
+  compareTargetResultState,
+} from "@/states/analysis";
 
 const MAX_CONDITIONS = 10;
 export const Compare = () => {
-  const [target, setTarget] = useState<ICondition>({
-    ...initialCondition,
-  });
-  const [conditions, setConditions] = useState<ICondition[]>([
-    {
-      ...initialCondition,
-    },
-  ]);
-  const [targetResult, setTargetResult] = useState<Map<string, IResult[]>>();
-  const [otherResults, setOtherResults] = useState<Map<string, IResult[]>>();
+  const [target, setTarget] = useRecoilState(compareTargetConditionState);
+  const [conditions, setConditions] = useRecoilState(compareConditionState);
+  const [targetResult, setTargetResult] = useRecoilState(
+    compareTargetResultState
+  );
+  const [otherResults, setOtherResults] = useRecoilState(
+    compareOtherResultState
+  );
   const raceIds = useRecoilValue(raceIdState);
   const raceInfo = useRecoilValue(raceInfoState);
   const toast = useRef<Toast>(null);
@@ -85,8 +90,8 @@ export const Compare = () => {
       }
       otherResults.get(raceName)?.push(result);
     }
-    setTargetResult(targetResult);
-    setOtherResults(otherResults);
+    setTargetResult({ result: targetResult });
+    setOtherResults({ result: otherResults });
   };
   const addCondition = () => {
     const update = [...conditions];
@@ -117,8 +122,8 @@ export const Compare = () => {
           <Button label="実行" onClick={handleExe} />
         </div>
       </div>
-      {targetResult &&
-        Array.from(targetResult).map(([raceName, result]) => {
+      {targetResult.result &&
+        Array.from(targetResult.result).map(([raceName, result]) => {
           return (
             <>
               <Card className="mt-8 mx-4 py-4 px-2">
@@ -133,9 +138,11 @@ export const Compare = () => {
             </>
           );
         })}
-      {otherResults && <div className="divider mx-4 my-8">関連レース</div>}
-      {otherResults &&
-        Array.from(otherResults).map(([raceName, result]) => {
+      {Array.from(otherResults.result).length > 0 && (
+        <div className="divider mx-4 my-8">条件レース</div>
+      )}
+      {otherResults.result &&
+        Array.from(otherResults.result).map(([raceName, result]) => {
           return (
             <Card className="mt-4 mx-4 px-2 pt-2" key={raceName}>
               <div className="text-lg font-bold">{raceName}</div>

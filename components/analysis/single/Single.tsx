@@ -1,5 +1,5 @@
 import { Condition } from "./Condition";
-import { ResultTable } from "./Table";
+import { ResultTable } from "../Table";
 import { WinRate } from "../WinRate";
 import { Card } from "@/components/common/Card";
 import { Toast } from "primereact/toast";
@@ -9,13 +9,12 @@ import { useRef, useState } from "react";
 import { createWhere, createResult, initialCondition } from "@/utils/analysis";
 import axios from "axios";
 import { raceIdState } from "@/states/race";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { singleConditionState, singleResultState } from "@/states/analysis";
 
 export const Single = () => {
-  const [condition, setCondition] = useState<ICondition>({
-    ...initialCondition,
-  });
-  const [results, setResults] = useState<IResult[]>();
+  const [condition, setCondition] = useRecoilState(singleConditionState);
+  const [results, setResults] = useRecoilState(singleResultState);
   const toast = useRef<Toast>(null);
   const raceIds = useRecoilValue(raceIdState);
 

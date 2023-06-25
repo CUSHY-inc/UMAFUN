@@ -2,24 +2,27 @@ import { Condition } from "./Condition";
 import { Card } from "@/components/common/Card";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
-import { ICondition, IResult } from "@/interfaces/analysis";
-import { useRef, useState } from "react";
-import { createWhere, createResult, initialCondition } from "@/utils/analysis";
+import { IResult } from "@/interfaces/analysis";
+import { useRef } from "react";
+import { createWhere, createResult } from "@/utils/analysis";
 import axios from "axios";
 import { searchOtherResults } from "@/utils/analysis";
-import { ResultTable } from "./Table";
+import { ResultTable } from "../Table";
 import { raceIdState, raceInfoState } from "@/states/race";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  aiConditionState,
+  aiOtherResultState,
+  aiTargetResultState,
+} from "@/states/analysis";
 
 export const AI = () => {
-  const [condition, setCondition] = useState<ICondition>({
-    ...initialCondition,
-  });
-  const toast = useRef<Toast>(null);
-  const [targetResults, setTargetResults] = useState<Map<string, IResult[]>>();
-  const [otherResults, setOtherResults] = useState<Map<string, IResult[]>>();
+  const [condition, setCondition] = useRecoilState(aiConditionState);
+  const [targetResults, setTargetResults] = useRecoilState(aiTargetResultState);
+  const [otherResults, setOtherResults] = useRecoilState(aiOtherResultState);
   const raceIds = useRecoilValue(raceIdState);
   const raceInfo = useRecoilValue(raceInfoState);
+  const toast = useRef<Toast>(null);
 
   const handleClick = async () => {
     if (!condition.raceName) {
@@ -43,9 +46,9 @@ export const AI = () => {
       const target = raceNameResults.get(condition.raceName);
       const targetMap = new Map<string, IResult[]>();
       targetMap.set(condition.raceName, target!);
-      setTargetResults(targetMap);
+      setTargetResults({ result: targetMap });
       raceNameResults.delete(condition.raceName);
-      setOtherResults(raceNameResults);
+      setOtherResults({ result: raceNameResults });
     }
   };
 
@@ -60,8 +63,8 @@ export const AI = () => {
           </div>
         </div>
       </Card>
-      {targetResults &&
-        Array.from(targetResults).map(([raceName, result]) => {
+      {targetResults.result &&
+        Array.from(targetResults.result).map(([raceName, result]) => {
           return (
             <Card className="mt-4 mx-4 px-2 pt-2" key={raceName}>
               <div className="text-lg font-bold">{raceName}</div>
@@ -71,9 +74,11 @@ export const AI = () => {
             </Card>
           );
         })}
-      {otherResults && <div className="divider mx-4 my-8">関連レース</div>}
-      {otherResults &&
-        Array.from(otherResults).map(([raceName, result]) => {
+      {Array.from(otherResults.result).length > 0 && (
+        <div className="divider mx-4 my-8">関連レース</div>
+      )}
+      {otherResults.result &&
+        Array.from(otherResults.result).map(([raceName, result]) => {
           return (
             <Card className="mt-4 mx-4 px-2 pt-2" key={raceName}>
               <div className="text-lg font-bold">{raceName}</div>

@@ -6,7 +6,7 @@ import {
 import { Table } from "react-daisyui";
 import { TbodyEx, TheadEx } from "@/boilerplate/components/Table";
 import { IResult } from "@/interfaces/analysis";
-import { ChartPanel, VerticalChart } from "../Chart";
+import { ChartPanel, VerticalChart } from "./Chart";
 
 const createColumns = (data: IResult[]): ColumnDef<IResult>[] => [
   {
