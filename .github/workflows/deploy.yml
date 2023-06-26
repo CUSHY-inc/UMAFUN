@@ -1,14 +1,15 @@
 name: EC2 auto deploy
 
 on:
- push:
-   branches:
-     - main
+  push:
+    branches:
+      - main
      
 jobs:
   build:
-   steps:
-    - name: Deploy
-     run: |
-      echo "${{ secrets.PRIVATE_KEY }}" > private_key
-      chmod 600 private_keyuncask/kanpai.git"
+    steps:
+      - name: Deploy
+        run: |
+          echo "${{ secrets.PRIVATE_KEY }}" > private_key
+          chmod 600 private_key
+          # Here you can add any other command you want to run
