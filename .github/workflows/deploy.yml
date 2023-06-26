@@ -16,7 +16,10 @@ jobs:
 
     - name: Install dependencies
       run: yarn install
-
+      
+    - name: Install Next.js
+      run: yarn add next
+      
     - name: Build
       run: yarn build
 
