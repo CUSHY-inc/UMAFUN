@@ -17,13 +17,13 @@ model mgt_race_id {
 model mgt_race_info {
   id             Int         @id @default(autoincrement())
   race_id        Int
-  date           DateTime    @db.Date
-  place          String      @db.VarChar(255)
-  old            String      @db.VarChar(255)
-  distance       String      @db.VarChar(255)
-  weather        String      @db.VarChar(255)
-  race_condition String      @db.VarChar(255)
-  time           String      @db.VarChar(255)
+  date           DateTime?   @db.Date
+  place          String?     @db.VarChar(255)
+  old            String?     @db.VarChar(255)
+  distance       String?     @db.VarChar(255)
+  weather        String?     @db.VarChar(255)
+  race_condition String?     @db.VarChar(255)
+  time           String?     @db.VarChar(255)
   mgt_race_id    mgt_race_id @relation(fields: [race_id], references: [race_id], onDelete: Cascade, map: "fk_race_id_info")
 
   @@index([race_id], map: "race_id")
