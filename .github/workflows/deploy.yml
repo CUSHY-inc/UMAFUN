@@ -1,16 +1,27 @@
-name: EC2 auto deploy
+name: Next.js CI
 
-on:
-  push:
-    branches:
-      - main
-     
+on: [push]
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Deploy
-        run: |
-          echo "${{ secrets.PRIVATE_KEY }}" > private_key
-          chmod 600 private_key
-          ssh -oStrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "whoami > tmp && cd /labo/umafun && git pull origin main && /ope/reboot/umafun/frontend.sh"
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16.16.0
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Build
+      run: yarn build
+
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-artifacts
+        path: .next/
