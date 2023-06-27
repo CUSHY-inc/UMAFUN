@@ -143,15 +143,14 @@ export const searchTargetResult = async (
     const targetRaceDate = raceInfo
       .filter((record: mgt_race_info) => {
         return (
-          record.race_id == targetRaceId &&
-          new Date(record.date).getFullYear() == year
+          record.race_id == targetRaceId && record.date!.getFullYear() == year
         );
       })
       .map((record: mgt_race_info) => record.date)[0];
     const raceId = raceInfo
       .filter((record: mgt_race_info) => {
-        const recordYear = new Date(record.date).getFullYear();
-        return recordYear === year && record.date <= targetRaceDate;
+        const recordYear = record.date!.getFullYear();
+        return recordYear === year && record.date! <= targetRaceDate!;
       })
       .map((record: mgt_race_info) => record.race_id);
     const names = srcResults
@@ -205,15 +204,14 @@ export const searchOtherResults = async (
     const targetRaceDate = raceInfo
       .filter((record: mgt_race_info) => {
         return (
-          record.race_id == targetRaceId &&
-          new Date(record.date).getFullYear() == year
+          record.race_id == targetRaceId && record.date!.getFullYear() == year
         );
       })
       .map((record: mgt_race_info) => record.date)[0];
     const raceId = raceInfo
       .filter((record: mgt_race_info) => {
-        const recordYear = new Date(record.date).getFullYear();
-        return recordYear === year && record.date <= targetRaceDate;
+        const recordYear = record.date!.getFullYear();
+        return recordYear === year && record.date! <= targetRaceDate!;
       })
       .map((record: mgt_race_info) => record.race_id);
     const names = srcResult

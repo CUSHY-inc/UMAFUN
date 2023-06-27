@@ -53,7 +53,7 @@ export const Analysis = () => {
         raceName: recentRaceName,
       });
     }
-  }, [raceIdsData, raceInfoData]);
+  }, [raceIdsData, raceInfoData, setRaceIds, setRaceInfo, setRecentRace]);
 
   return (
     <>

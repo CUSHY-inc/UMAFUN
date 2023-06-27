@@ -47,7 +47,7 @@ export const Compare = () => {
       raceId: recentRace.raceId,
       raceName: recentRace.raceName,
     }));
-  }, [recentRace]);
+  }, [recentRace, setTarget]);
 
   const handleExe = async () => {
     if (!target.raceName) {

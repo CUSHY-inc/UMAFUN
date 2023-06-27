@@ -69,7 +69,7 @@ export const VerticalChart = ({
     };
     setChartData(data);
     setChartOptions(options);
-  }, []);
+  }, [datasets.data, datasets.label, labels]);
   return (
     <div className="card">
       <Chart type="bar" data={chartData} options={chartOptions} />

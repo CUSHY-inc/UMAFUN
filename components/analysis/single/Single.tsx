@@ -25,7 +25,7 @@ export const Single = () => {
       raceId: recentRace.raceId,
       raceName: recentRace.raceName,
     }));
-  }, [recentRace]);
+  }, [recentRace, setCondition]);
 
   const handleClick = async () => {
     if (!condition.raceName) {
