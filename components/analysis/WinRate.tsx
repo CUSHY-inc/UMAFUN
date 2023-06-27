@@ -52,14 +52,14 @@ export const WinRate = ({ results }: { results: IResult[] }) => {
         let record;
         for (const result of results) {
           const source = raceInfo.filter((item: mgt_race_info) => {
-            const year = new Date(item.date).getFullYear();
+            const year = item.date!.getFullYear();
             return item.race_id === result.raceId && year === result.year;
           });
           const target = raceInfo.filter((item: mgt_race_info) => {
-            const year = new Date(item.date).getFullYear();
+            const year = item.date!.getFullYear();
             return item.race_id === targetRaceId && year === result.year;
           });
-          if (source[0].date <= target[0].date) {
+          if (source[0].date! <= target[0].date!) {
             record = fetchRecord(
               result.name!,
               targetRaceId!,
