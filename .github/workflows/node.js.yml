@@ -41,4 +41,4 @@ jobs:
         run: |
           echo "${{ secrets.PRIVATE_KEY }}" > private_key
           chmod 600 private_key
-          ssh -oStrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "/ope/umafun/kill_frontend.sh && cd /labo/umafun && git pull origin main && yarn install"
+          ssh -oStrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "/ope/umafun/kill_frontend.sh && cd /labo/umafun && git pull origin main && /home/ec2/.volta/bin/yarn install"
