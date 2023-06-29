@@ -47,5 +47,5 @@ jobs:
           ls
           ssh -oStrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "/ope/umafun/reboot/frontend/kill.sh"
           ssh -oStrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "/ope/umafun/reboot/frontend/prepare.sh"
-          scp -oStrictHostKeyChecking=no -i private_key -r ./build-artifacts/.next ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }}:/labo/umafun
+          scp -oStrictHostKeyChecking=no -i private_key -r ./* ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }}:/labo/umafun/.next
           ssh -oStrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "/ope/umafun/reboot/frontend/start.sh"
