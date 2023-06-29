@@ -21,6 +21,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - run: volta install node
       - run: yarn install
       - run: yarn build
       - name: Archive production artifacts
@@ -41,4 +42,4 @@ jobs:
         run: |
           echo "${{ secrets.PRIVATE_KEY }}" > private_key
           chmod 600 private_key
-          ssh -oStrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "/ope/umafun/kill_frontend.sh && cd /labo/umafun && git pull origin main && /home/ec2-user/.volta/bin/yarn install"
+          ssh -oStrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "/ope/umafun/kill_frontend.sh && cd /labo/umafun && git pull origin main && volta install node && yarn install"
