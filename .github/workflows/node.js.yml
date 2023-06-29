@@ -26,6 +26,8 @@ jobs:
           name: build-artifacts
           path: |
             .next
+      - run: pwd
+      - run: ls
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -41,6 +43,8 @@ jobs:
           chmod 600 private_key
       - name: SSH Command
         run: |
+          pwd
+          ls
           ssh -oStrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "/ope/umafun/kill_frontend.sh"
           ssh -oStrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "PATH='/home/ec2-user/.volta/bin:/home/ec2-user/.nvm/versions/node/v16.16.0/bin:/home/ec2-user/.volta/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/ec2-user/.local/bin:/home/ec2-user/bin' && cd /labo/umafun && git pull origin main && yarn install && npx prisma generate"
           scp -oStrictHostKeyChecking=no -i private_key -r ./build-artifacts/.next ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }}:/labo/umafun
