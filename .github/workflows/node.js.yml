@@ -41,6 +41,4 @@ jobs:
         run: |
           echo "${{ secrets.PRIVATE_KEY }}" > private_key
           chmod 600 private_key
-          ssh -oStrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "/ope/umafun/kill_frontend.sh && cd /labo/umafun && git pull origin main && yarn install && npx prisma generate"
-          scp -o StrictHostKeyChecking=no -i private_key -r .next ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }}:/home/ec2-user
-          ssh -oStrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "/ope/umafun/start_frontend.sh"
+          ssh -oStrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "/ope/umafun/kill_frontend.sh && cd /labo/umafun && git pull origin main"
