@@ -59,13 +59,13 @@ export const StickyTh = ({ className, children, ...props }: IProps) => {
   );
 };
 export const Sorter = ({ isSorted }: { isSorted?: false | SortDirection }) => {
-  return match({ isSorted })
-    .with({ isSorted: "desc" }, () => <FaSortDown className="inline-block " />)
-    .with({ isSorted: "asc" }, () => <FaSortUp className="inline-block" />)
-    .with({ isSorted: false }, { isSorted: P.nullish }, () => (
-      <FaSort className="opacity-75 inline-block" />
-    ))
-    .exhaustive();
+  if (isSorted === "desc") {
+    return <FaSortDown className="inline-block " />;
+  } else if (isSorted === "asc") {
+    return <FaSortUp className="inline-block" />;
+  } else {
+    return <FaSort className="opacity-75 inline-block" />;
+  }
 };
 export const Expander = ({ isExpanded }: { isExpanded: boolean }) => {
   if (isExpanded) {
@@ -198,66 +198,44 @@ export const TbodyEx = <T extends RowData>({
     return <TbodyLoader colSpan={colSpan} />;
   } else {
     const { rows } = table.getRowModel();
-    return (
-      <tbody className={className}>
-        {match({
-          empty: rows.length === 0,
-          emptyAlert,
-        })
-          .with(
-            { empty: true, emptyAlert: P.select(P.not(P.nullish)) },
-            (message) => (
-              <tr>
-                <td colSpan={colSpan}>{message}</td>
-              </tr>
-            )
-          )
-          .otherwise(() =>
-            rows.map((row) => (
-              <Fragment key={row.id}>
-                {match({ mobileRowRender })
-                  .with(
-                    { mobileRowRender: P.select(P.not(P.nullish)) },
-                    (rowRender) => (
-                      <tr className="md:hidden">
-                        <td colSpan={colSpan}>{rowRender(row)}</td>
-                      </tr>
-                    )
-                  )
-                  .otherwise(() => null)}
-                <tr
-                  className={clsx({
-                    ["hidden md:table-row"]: !!mobileRowRender,
-                  })}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <Fragment key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </Fragment>
-                  ))}
+    if (rows.length === 0 && emptyAlert !== undefined) {
+      return (
+        <tr>
+          <td colSpan={colSpan}>{emptyAlert}</td>
+        </tr>
+      );
+    } else {
+      return (
+        <tbody className={className}>
+          {rows.map((row) => (
+            <Fragment key={row.id}>
+              {mobileRowRender && (
+                <tr className="md:hidden">
+                  <td colSpan={colSpan}>{mobileRowRender(row)}</td>
                 </tr>
-                {match({ expanded: row.getIsExpanded(), expandedRowRender })
-                  .with(
-                    {
-                      expanded: true,
-                      expandedRowRender: P.select(P.not(P.nullish)),
-                    },
-                    (rowRender) => (
-                      <tr>
-                        <td></td>
-                        <td colSpan={colSpan - 1}>{rowRender(row)}</td>
-                      </tr>
-                    )
-                  )
-                  .otherwise(() => null)}
-              </Fragment>
-            ))
-          )}
-      </tbody>
-    );
+              )}
+              <tr
+                className={clsx({
+                  ["hidden md:table-row"]: !!mobileRowRender,
+                })}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <Fragment key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </Fragment>
+                ))}
+              </tr>
+              {row.getIsExpanded() && expandedRowRender && (
+                <tr>
+                  <td></td>
+                  <td colSpan={colSpan - 1}>{expandedRowRender(row)}</td>
+                </tr>
+              )}
+            </Fragment>
+          ))}
+        </tbody>
+      );
+    }
   }
 };
 

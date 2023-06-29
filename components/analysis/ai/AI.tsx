@@ -69,7 +69,7 @@ export const AI = () => {
       toast.current!.show({
         severity: "error",
         summary: "通信エラー",
-        detail: "通信エラーが発生しました",
+        detail: `${error}`,
         life: 3000,
       });
     } finally {
