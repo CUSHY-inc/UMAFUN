@@ -26,8 +26,6 @@ jobs:
           name: build-artifacts
           path: |
             .next
-      - run: pwd
-      - run: ls
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -43,8 +41,6 @@ jobs:
           chmod 600 private_key
       - name: SSH Command
         run: |
-          pwd
-          ls
           ssh -oStrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "/ope/umafun/reboot/frontend/kill.sh"
           ssh -oStrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "/ope/umafun/reboot/frontend/prepare.sh"
           scp -oStrictHostKeyChecking=no -i private_key -r ./* ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }}:/labo/umafun/.next
