@@ -20,18 +20,21 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: yarn install
       - run: yarn build
+      - name: Prepare artifacts
+        run: |
+          mkdir artifacts
+          mv .next artifacts/.next
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build-artifacts
-          path: |
-            .next
+          path: artifacts/.next
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Download build artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: build-artifacts
           path: ./
@@ -43,5 +46,5 @@ jobs:
         run: |
           ssh -oStrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "/ope/umafun/reboot/frontend/kill.sh"
           ssh -oStrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "/ope/umafun/reboot/frontend/prepare.sh"
-          scp -oStrictHostKeyChecking=no -i private_key -r ./* ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }}:/labo/umafun/.next
+          scp -oStrictHostKeyChecking=no -i private_key -r .next ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }}:/labo/umafun/
           ssh -oStrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "/ope/umafun/reboot/frontend/start.sh"
