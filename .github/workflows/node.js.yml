@@ -23,12 +23,12 @@ jobs:
       - name: Prepare artifacts
         run: |
           mkdir artifacts
-          mv .next artifacts/.next
+          mv .next artifacts/
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
         with:
           name: build-artifacts
-          path: artifacts/.next
+          path: artifacts/
   deploy:
     needs: build
     runs-on: ubuntu-latest
