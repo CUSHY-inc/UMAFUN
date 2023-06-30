@@ -40,6 +40,8 @@ jobs:
           path: ./
       - name: Setup SSH
         run: |
+          pwd
+          ls
           echo "${{ secrets.PRIVATE_KEY }}" > private_key
           chmod 600 private_key
       - name: SSH Command
