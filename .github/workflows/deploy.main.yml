@@ -7,7 +7,7 @@ on:
     branches: ["main"]
 
 jobs:
-  build:
+  Build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -29,8 +29,8 @@ jobs:
         with:
           name: build-artifacts
           path: artifacts/
-  deploy:
-    needs: build
+  Deploy:
+    needs: Build
     runs-on: ubuntu-latest
     steps:
       - name: Download build artifacts
@@ -40,8 +40,6 @@ jobs:
           path: ./
       - name: Setup SSH
         run: |
-          pwd
-          ls
           echo "${{ secrets.PRIVATE_KEY }}" > private_key
           chmod 600 private_key
       - name: SSH Command

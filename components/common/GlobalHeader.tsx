@@ -6,7 +6,7 @@ export const GlobalHeader = () => {
       <button>
         <GoThreeBars className="text-4xl ml-4" />
       </button>
-      <span className="ml-4 text-2xl font-semibold text-sky-900">UMAFUN</span>
+      <span className="ml-4 text-2xl font-semibold text-sky-900">UMAFUN1</span>
     </div>
   );
 };
