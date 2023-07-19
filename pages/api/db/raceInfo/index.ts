@@ -1,11 +1,11 @@
-import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
+import { getPrismaClient } from "@/boilerplate/utils/prisma";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const prisma = new PrismaClient();
+  const prisma = getPrismaClient();
   switch (req.method) {
     case "GET": {
       const raceIds = await prisma.mgt_race_info.findMany();
