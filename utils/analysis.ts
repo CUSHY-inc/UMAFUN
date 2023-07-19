@@ -204,7 +204,6 @@ export const searchOtherResults = async (
   for (const year of years) {
     const targetRaceDate = raceInfo
       .filter((record: mgt_race_info) => {
-        console.log({ record });
         return (
           record.race_id == targetRaceId &&
           new Date(record.date!).getFullYear() == year
