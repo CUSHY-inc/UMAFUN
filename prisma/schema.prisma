@@ -3,52 +3,44 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
 model mgt_race_id {
-  race_id         Int               @id
-  race_name       String            @db.VarChar(255)
-  mgt_race_info   mgt_race_info[]
-  mgt_race_result mgt_race_result[]
+  race_id   Int    @id
+  race_name String @db.VarChar(255)
 }
 
 model mgt_race_info {
-  id             Int         @id @default(autoincrement())
+  id             Int       @id
   race_id        Int
-  date           DateTime?   @db.Date
-  place          String?     @db.VarChar(255)
-  old            String?     @db.VarChar(255)
-  distance       String?     @db.VarChar(255)
-  weather        String?     @db.VarChar(255)
-  race_condition String?     @db.VarChar(255)
-  time           String?     @db.VarChar(255)
-  mgt_race_id    mgt_race_id @relation(fields: [race_id], references: [race_id], onDelete: Cascade, map: "fk_race_id_info")
-
-  @@index([race_id], map: "race_id")
+  date           DateTime? @db.Date
+  place          String?   @db.VarChar(255)
+  old            String?   @db.VarChar(255)
+  distance       String?   @db.VarChar(255)
+  weather        String?   @db.VarChar(255)
+  race_condition String?   @db.VarChar(255)
+  time           String?   @db.VarChar(255)
 }
 
 model mgt_race_result {
-  id           Int         @id @default(autoincrement())
+  id           Int     @id
   race_id      Int
   year         Int?
   arrive       Int?
   frame        Int?
   number       Int?
-  name         String?     @db.VarChar(255)
-  gender_old   String?     @db.VarChar(255)
-  weight       Float?      @db.Float
-  jockey       String?     @db.VarChar(255)
-  time         Float?      @db.Float
-  margin       String?     @db.VarChar(255)
-  passing      String?     @db.VarChar(255)
-  last         Float?      @db.Float
+  name         String? @db.VarChar(255)
+  gender_old   String? @db.VarChar(255)
+  weight       Float?  @db.Real
+  jockey       String? @db.VarChar(255)
+  time         Float?  @db.Real
+  margin       String? @db.VarChar(255)
+  passing      String? @db.VarChar(255)
+  last         Float?  @db.Real
   last_rank    Int?
-  odds         Float?      @db.Float
+  odds         Float?  @db.Real
   popular      Int?
-  horse_weight String?     @db.VarChar(255)
-  mgt_race_id  mgt_race_id @relation(fields: [race_id], references: [race_id], onDelete: Cascade, map: "fk_race_id_result")
-
-  @@index([race_id], map: "race_id")
+  horse_weight String? @db.VarChar(255)
 }
